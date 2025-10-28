@@ -1,4 +1,3 @@
-
 // ----------------------------------------------------------------------------------
 import { createContext, useState, useEffect } from "react"
 import React from 'react'
@@ -17,11 +16,11 @@ const OsitAssignmentProvider = ({ children }) => {
     const weeks = ["week1", "week2", "week3", "week4", "week5"];
 
     const defaultinterventionPlan = {
-        week1: [{ ...initialSession }], 
-        week2: [{ ...initialSession }], 
+        week1: [{ ...initialSession }],
+        week2: [{ ...initialSession }],
         week3: [{ ...initialSession }],
-        week4: [{ ...initialSession }], 
-        week5: [{ ...initialSession }], 
+        week4: [{ ...initialSession }],
+        week5: [{ ...initialSession }],
         mentionToolUsedForRespectiveGoal: ""
     };
 
@@ -66,33 +65,23 @@ const OsitAssignmentProvider = ({ children }) => {
                 const savedFormA = localStorage.getItem('participantInfo');
                 if (savedFormA) {
                     setParticipantInfo(JSON.parse(savedFormA));
-                  
-                    
                 }
-
                 const savedFormB = localStorage.getItem('childProfile');
                 if (savedFormB) {
                     setChildProfile(JSON.parse(savedFormB));
-                  
-
                 }
-
                 const savedFormC = localStorage.getItem('assignmentDetail');
                 if (savedFormC) {
                     setAssignmentDetails(JSON.parse(savedFormC));
-               
                 }
-
                 const savedFormD = localStorage.getItem('interventionPlan');
                 if (savedFormD) {
                     setInterventionPlan(JSON.parse(savedFormD));
-                    
                 }
             } catch (error) {
                 console.error("Error loading from localStorage:", error);
             }
         };
-
         loadFromLocalStorage();
     }, []);
 
@@ -105,6 +94,9 @@ const OsitAssignmentProvider = ({ children }) => {
             return "bg-gray-200 text-gray-600";
         }
     };
+
+    // 
+
 
     const renderForm = () => {
         switch (steps[activeStep]) {
@@ -120,10 +112,9 @@ const OsitAssignmentProvider = ({ children }) => {
                 return null;
         }
     };
-
     const resetAllForms = () => {
         // Clear localStorage
-        ['formAData', 'childProfile', 'assignmentDetail', 'interventionPlan'].forEach((key) => {
+        ['participantInfo', 'childProfile', 'assignmentDetail', 'interventionPlan'].forEach((key) => {
             localStorage.removeItem(key);
         });
 
@@ -226,7 +217,20 @@ const OsitAssignmentProvider = ({ children }) => {
             console.log("Submitting data:", transformedData);
 
             // API call
-            const response = await axios.post(`http://localhost:3000/osit-assignments`, transformedData);
+
+            const token = localStorage.getItem("token");
+            
+            const response = await axios.post(`http://localhost:3000/osit-assignments`,
+
+                transformedData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+
+
+            );
             console.log("API Response:", response);
 
             // Reset forms and show success
@@ -241,25 +245,25 @@ const OsitAssignmentProvider = ({ children }) => {
     };
 
     return (
-        <OsitAssignmentContext.Provider value={{ 
-            participantInfo, 
-            setParticipantInfo, 
-            childProfile, 
-            setChildProfile, 
-            assignmentDetail, 
-            setAssignmentDetails, 
-            interventionPlan, 
-            setInterventionPlan, 
-            activeStep, 
-            setActiveStep, 
-            getStepStyle, 
-            renderForm, 
-            steps, 
-            weeks, 
-            initialSession, 
-            submitStatus, 
-            setSubmitStatus, 
-            isFormSubmitted, 
+        <OsitAssignmentContext.Provider value={{
+            participantInfo,
+            setParticipantInfo,
+            childProfile,
+            setChildProfile,
+            assignmentDetail,
+            setAssignmentDetails,
+            interventionPlan,
+            setInterventionPlan,
+            activeStep,
+            setActiveStep,
+            getStepStyle,
+            renderForm,
+            steps,
+            weeks,
+            initialSession,
+            submitStatus,
+            setSubmitStatus,
+            isFormSubmitted,
             handleFormCompletion,
             resetAllForms
         }}>

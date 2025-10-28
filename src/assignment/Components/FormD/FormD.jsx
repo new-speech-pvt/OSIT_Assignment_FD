@@ -1,20 +1,19 @@
 
-// ---------------------------------------------------------------------------------------
-
 import React, { useContext, useState } from "react";
 import { OsitAssignmentContext } from "../../pages/OsitAssignmentProvider";
+import DatePicker from "../Inputs/Datepicker";
 
 const FormD = () => {
-  const { 
-    activeStep, 
-    setActiveStep, 
-    interventionPlan, 
-    setInterventionPlan, 
-    weeks, 
-    initialSession, 
-    submitStatus, 
-    setSubmitStatus, 
-    handleFormCompletion 
+  const {
+    activeStep,
+    setActiveStep,
+    interventionPlan,
+    setInterventionPlan,
+    weeks,
+    initialSession,
+    submitStatus,
+    setSubmitStatus,
+    handleFormCompletion
   } = useContext(OsitAssignmentContext);
 
   const [expandedWeek, setExpandedWeek] = useState("week1");
@@ -25,13 +24,13 @@ const FormD = () => {
     if (!interventionPlan.mentionToolUsedForRespectiveGoal?.trim()) {
       newErrors.mentionToolUsedForRespectiveGoal = "Required";
     }
-    
+
     weeks.forEach((week) => {
       const sessions = interventionPlan[week] || [];
       if (sessions.length < 1 || sessions.length > 5) {
         newErrors[week] = "1-5 sessions required";
       }
-      
+
       sessions.forEach((session, sIndex) => {
         if (!session.goal || session.goal.length < 1 || session.goal.length > 2 || session.goal.some(g => !g.trim())) {
           newErrors[`${week}_s${sIndex}_goals`] = "1-2 filled goals required";
@@ -47,7 +46,7 @@ const FormD = () => {
         }
       });
     });
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -57,7 +56,7 @@ const FormD = () => {
   const updateInterventionPlan = (updatedPlan) => {
     setInterventionPlan(updatedPlan);
     localStorage.setItem("interventionPlan", JSON.stringify(updatedPlan));
-     console.log("FormD saved to localStorage:", updatedPlan);
+    console.log("FormD saved to localStorage:", updatedPlan);
   };
 
   const handleWeekChange = (week, index, field, value) => {
@@ -65,6 +64,9 @@ const FormD = () => {
     updatedWeek[index] = { ...updatedWeek[index], [field]: value };
     const updatedPlan = { ...interventionPlan, [week]: updatedWeek };
     updateInterventionPlan(updatedPlan);
+    // 
+    setSubmitStatus(null);
+
   };
 
   const handleAddSession = (week) => {
@@ -156,38 +158,38 @@ const FormD = () => {
   const handleNextOrSubmit = async () => {
     console.log("Submit button clicked");
     if (!validateForm()) {
-        console.log("Validation failed"); 
+      console.log("Validation failed");
       return;
     }
     setSubmitStatus("Submitting...");
-      console.log("Calling handleFormCompletion...");
-      try {
-         await handleFormCompletion();
-         console.log("handleFormCompletion completed");
-      } catch (error) {
-         console.error("Error in handleFormCompletion:", error);
+    console.log("Calling handleFormCompletion...");
+    try {
+      await handleFormCompletion();
+      console.log("handleFormCompletion completed");
+    } catch (error) {
+      console.error("Error in handleFormCompletion:", error);
       setSubmitStatus("Submission failed");
-      }
-  
+    }
+
   };
 
   const inputClass = "w-full px-3 py-2 border rounded-md text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-indigo-400";
 
   return (
-    <div className="p-6 max-w-6xl mx-auto space-y-6">
-      <h2 className="text-3xl font-bold text-indigo-700 mb-6">Intervention Plan</h2>
-      
+    <div className="p-1  md:w-full sm:w-11/12 mx-auto space-y-6 ">
+      <h2 className="md:text-3xl text-[30px] font-bold text-indigo-700 mb-10">Intervention Plan</h2>
+
       {weeks.map((week, wIndex) => (
         <div key={week} className="bg-white shadow-lg rounded-md overflow-hidden">
-          <button 
-            type="button" 
-            className="w-full flex justify-between items-center p-4 bg-indigo-100 hover:bg-indigo-200 transition" 
+          <button
+            type="button"
+            className="w-full flex justify-between items-center p-4 bg-indigo-100 hover:bg-indigo-200 transition"
             onClick={() => toggleWeek(week)}
           >
-            <span className="font-semibold text-indigo-700">Week {wIndex + 1}</span>
-            <span className="text-indigo-600">{expandedWeek === week ? "−" : "+"}</span>
+            <span className="font-semibold text-indigo-700 ">Week {wIndex + 1}</span>
+            <span className="text-indigo-600">{expandedWeek === week ? "-" : "+"}</span>
           </button>
-          
+
           {expandedWeek === week && (
             <div className="p-4 space-y-4">
               {interventionPlan[week]?.map((session, sIndex) => (
@@ -195,35 +197,35 @@ const FormD = () => {
                   <div className="flex justify-between items-center">
                     <span className="font-medium">Session {sIndex + 1}</span>
                     {interventionPlan[week].length > 1 && (
-                      <button 
-                        type="button" 
-                        onClick={() => handleRemoveSession(week, sIndex)} 
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveSession(week, sIndex)}
                         className="text-red-500 text-sm hover:underline"
                       >
                         Remove
                       </button>
                     )}
                   </div>
-                  
+
                   {/* Goals Section */}
                   <div>
                     <label className="text-sm font-medium">Goals (1-2 required)</label>
                     {session.goal?.map((g, gIndex) => (
                       <div key={gIndex} className="flex gap-2 items-center mt-1">
-                        <input 
-                          type="text" 
-                          value={g} 
-                          onChange={(e) => handleGoalChange(week, sIndex, gIndex, e.target.value)} 
-                          className={inputClass} 
+                        <input
+                          type="text"
+                          value={g}
+                          onChange={(e) => handleGoalChange(week, sIndex, gIndex, e.target.value)}
+                          className={inputClass}
                           placeholder={`Goal ${gIndex + 1}`}
                         />
                         {session.goal.length > 1 && (
-                          <button 
-                            type="button" 
-                            onClick={() => handleRemoveGoal(week, sIndex, gIndex)} 
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveGoal(week, sIndex, gIndex)}
                             className="text-red-500 text-sm hover:bg-red-100 w-8 h-8 rounded-full flex items-center justify-center"
                           >
-                            −
+                            -
                           </button>
                         )}
                       </div>
@@ -232,35 +234,35 @@ const FormD = () => {
                       <p className="text-red-500 text-sm mt-1">{errors[`${week}_s${sIndex}_goals`]}</p>
                     )}
                     {session.goal.length < 2 && (
-                      <button 
-                        type="button" 
-                        onClick={() => handleAddGoal(week, sIndex)} 
+                      <button
+                        type="button"
+                        onClick={() => handleAddGoal(week, sIndex)}
                         className="text-indigo-600 text-sm mt-1 hover:underline flex items-center gap-1"
                       >
                         <span>+</span> Add Goal
                       </button>
                     )}
                   </div>
-                  
+
                   {/* Activities Section */}
                   <div>
                     <label className="text-sm font-medium">Activities (1-2 required)</label>
                     {session.activity?.map((a, aIndex) => (
                       <div key={aIndex} className="flex gap-2 items-center mt-1">
-                        <input 
-                          type="text" 
-                          value={a} 
-                          onChange={(e) => handleActivityChange(week, sIndex, aIndex, e.target.value)} 
-                          className={inputClass} 
+                        <input
+                          type="text"
+                          value={a}
+                          onChange={(e) => handleActivityChange(week, sIndex, aIndex, e.target.value)}
+                          className={inputClass}
                           placeholder={`Activity ${aIndex + 1}`}
                         />
                         {session.activity.length > 1 && (
-                          <button 
-                            type="button" 
-                            onClick={() => handleRemoveActivity(week, sIndex, aIndex)} 
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveActivity(week, sIndex, aIndex)}
                             className="text-red-500 text-sm hover:bg-red-100 w-8 h-8 rounded-full flex items-center justify-center"
                           >
-                            −
+                            -
                           </button>
                         )}
                       </div>
@@ -269,52 +271,71 @@ const FormD = () => {
                       <p className="text-red-500 text-sm mt-1">{errors[`${week}_s${sIndex}_activities`]}</p>
                     )}
                     {session.activity.length < 2 && (
-                      <button 
-                        type="button" 
-                        onClick={() => handleAddActivity(week, sIndex)} 
+                      <button
+                        type="button"
+                        onClick={() => handleAddActivity(week, sIndex)}
                         className="text-indigo-600 text-sm mt-1 hover:underline flex items-center gap-1"
                       >
                         <span>+</span> Add Activity
                       </button>
                     )}
                   </div>
-                  
+
                   {/* Child Response and Date */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
                     <div>
                       <label className="text-sm font-medium">Child Response</label>
-                      <input 
-                        type="text" 
-                        value={session.childResponse || ""} 
-                        onChange={(e) => handleWeekChange(week, sIndex, "childResponse", e.target.value)} 
-                        className={inputClass} 
+                      <input
+                        type="text"
+                        value={session.childResponse || ""}
+                        onChange={(e) => handleWeekChange(week, sIndex, "childResponse", e.target.value)}
+                        className={inputClass}
                         placeholder="How did the child respond?"
                       />
                       {errors[`${week}_s${sIndex}_childResponse`] && (
                         <p className="text-red-500 text-sm mt-1">{errors[`${week}_s${sIndex}_childResponse`]}</p>
                       )}
                     </div>
-                    <div>
+
+                    {/* 
+                     <div>
                       <label className="text-sm font-medium">Date</label>
-                      <input 
-                        type="date" 
-                        value={session.date || ""} 
-                        onChange={(e) => handleWeekChange(week, sIndex, "date", e.target.value)} 
-                        className={inputClass} 
-                        onFocus={(e) => e.target.showPicker?.()} 
+                      <input
+                        type="date"
+                        value={session.date || ""}
+                        onChange={(e) => handleWeekChange(week, sIndex, "date", e.target.value)}
+                        className={inputClass}
+                        onFocus={(e) => e.target.showPicker?.()}
+                      />
+                      {errors[`${week}_s${sIndex}_date`] && (
+                        <p className="text-red-500 text-sm mt-1">{errors[`${week}_s${sIndex}_date`]}</p>
+                      )}
+                    </div> */}
+
+                    <div>
+                      <label className="text-sm font-medium">Date <span className="text-red-500">*</span></label>
+                      <DatePicker
+                        value={session.date || ""}
+                        name={`date_${week}_${sIndex}`} // Unique name for each DatePicker
+                        callback={(e, val) => handleWeekChange(week, sIndex, "date", val)}
+                        divClasses="h-12"
+                        inputClasses={inputClass}
+                        disableFuture={true}
+                        icon={true}
                       />
                       {errors[`${week}_s${sIndex}_date`] && (
                         <p className="text-red-500 text-sm mt-1">{errors[`${week}_s${sIndex}_date`]}</p>
                       )}
                     </div>
+
                   </div>
                 </div>
               ))}
-              
+
               {interventionPlan[week]?.length < 5 && (
-                <button 
-                  type="button" 
-                  onClick={() => handleAddSession(week)} 
+                <button
+                  type="button"
+                  onClick={() => handleAddSession(week)}
                   className="text-indigo-600 text-sm mt-2 hover:underline flex items-center gap-1"
                 >
                   <span>+</span> Add Session
@@ -322,50 +343,51 @@ const FormD = () => {
               )}
             </div>
           )}
-          
+
           {errors[week] && (
             <p className="text-red-500 text-sm mt-1 ml-4 p-2 bg-red-50 rounded">{errors[week]}</p>
           )}
         </div>
       ))}
-      
+
       {/* Tools Section */}
       <div className="bg-white shadow-lg rounded-md p-4 mt-6">
         <label className="text-sm font-medium">
           Mention Tool Used For Respective Goal <span className="text-red-500">*</span>
         </label>
-        <input 
-          type="text" 
-          value={interventionPlan.mentionToolUsedForRespectiveGoal || ""} 
-          onChange={handleToolChange} 
-          className={inputClass + " mt-2"} 
+        <input
+          type="text"
+          value={interventionPlan.mentionToolUsedForRespectiveGoal || ""}
+          onChange={handleToolChange}
+          className={inputClass + " mt-2"}
           placeholder="Describe the tools used for each goal"
         />
         {errors.mentionToolUsedForRespectiveGoal && (
           <p className="text-red-500 text-sm mt-1">{errors.mentionToolUsedForRespectiveGoal}</p>
         )}
       </div>
-      
+
       {/* Navigation Buttons */}
       <div className="flex justify-between mt-6">
-        <button 
-          onClick={handlePrevious} 
-          disabled={activeStep === 0} 
-          className="px-6 py-2 bg-gray-300 text-gray-800 rounded-lg disabled:opacity-50 hover:bg-gray-400 transition-colors"
+        <button
+          onClick={handlePrevious}
+          disabled={activeStep === 0}
+          className="px-4 py-2 bg-gray-300 text-gray-800 rounded disabled:opacity-50 "
         >
           Previous
         </button>
-        <button 
-          onClick={handleNextOrSubmit} 
-          className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+
+        <button
+          onClick={handleNextOrSubmit}
+          className="px-3 py-2 bg-indigo-600 text-white rounded "
         >
           Submit Assignment
         </button>
       </div>
-      
+
       {/* Status Message */}
       {submitStatus && (
-        <p className="mt-4 text-center text-green-600 font-medium p-3 bg-green-50 rounded-lg">
+        <p className="mt-4 text-center text-green-600 font-medium">
           {submitStatus}
         </p>
       )}
