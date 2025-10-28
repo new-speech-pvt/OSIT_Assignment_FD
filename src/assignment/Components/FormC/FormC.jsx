@@ -1,4 +1,3 @@
-
 // -----------------------------------------------------------------------------
 import React, { useState, useCallback, useContext, useRef } from "react";
 import { OsitAssignmentContext } from "../../pages/OsitAssignmentProvider";
@@ -34,9 +33,9 @@ const FormC = () => {
   // -----------------------------------------------------
 
   const handleChange = (fieldName, newContent) => {
-    const updated = { 
-      ...assignmentDetail, 
-      [fieldName]: newContent 
+    const updated = {
+      ...assignmentDetail,
+      [fieldName]: newContent
     };
     setAssignmentDetails(updated);
     localStorage.setItem("assignmentDetail", JSON.stringify(updated));
@@ -52,11 +51,11 @@ const FormC = () => {
 
   const handleNextOrSubmit = () => {
     if (!validateForm()) return;
-    setSubmitStatus("✅ Form saved successfully");
+    setSubmitStatus(" Form saved successfully");
     setActiveStep((prev) => Math.min(prev + 1, steps.length - 1));
   };
 
-  const inputClass = "w-full h-12 px-3 border rounded-md text-sm text-gray-700";
+  // const inputClass = "w-full h-12 px-3 border rounded-md text-sm text-gray-700";
 
 
   // -------------------------------------------------
@@ -76,21 +75,13 @@ const FormC = () => {
 
 
   return (
-    <div className="p-6 w-full space-y-6">
-      <h2 className="text-3xl font-bold text-indigo-700 mb-6">Assignment Details</h2>
+    <div className="p-2 w-full space-y-6">
+      <h2 className="md:text-3xl text-[20px] font-bold text-indigo-700 mb-10">Assignment Details</h2>
       <div className="flex flex-col gap-6">
-
-        {/* <div>
-          <label className="block mb-1 text-sm font-medium">Problem Statement <span className="text-red-500">*</span></label>
-
-
-          <input type="text" name="problemStatement" value={assignmentDetail.problemStatement || ""} onChange={handleChange} className={inputClass} />
-          {errors.problemStatement && <p className="text-red-500 text-sm mt-1">{errors.problemStatement}</p>}
-        </div> */}
 
         <div>
           <label className="block mb-1 text-sm font-medium">Problem Statement <span className="text-red-500">*</span></label>
-            <JoditEditor
+          <JoditEditor
             ref={editorRef}
             value={assignmentDetail.problemStatement || ""}
             config={{
@@ -103,33 +94,64 @@ const FormC = () => {
         </div>
 
 
-
-
-
-
         <div>
-          <label className="block mb-1 text-sm font-medium">Identification and Objective Setting <span className="text-red-500">*</span></label>
-          <input type="text" name="identificationAndObjectiveSetting" value={assignmentDetail.identificationAndObjectiveSetting || ""} onChange={handleChange} className={inputClass} />
+          <label className="block mb-1 text-sm font-medium">Problem
+            Statement <span className="text-red-500">*</span></label>
+
+          <JoditEditor
+            ref={editorRef}
+            value={assignmentDetail.identificationAndObjectiveSetting || ""}
+            config={{
+              ...joditConfig,
+              placeholder: "Enter problem statement..."
+            }}
+            onBlur={(newContent) => handleChange("identificationAndObjectiveSetting", newContent)}
+          />
           {errors.identificationAndObjectiveSetting && <p className="text-red-500 text-sm mt-1">{errors.identificationAndObjectiveSetting}</p>}
         </div>
+
         <div>
           <label className="block mb-1 text-sm font-medium">Planning and Tool Section <span className="text-red-500">*</span></label>
-          <input type="text" name="planningAndToolSection" value={assignmentDetail.planningAndToolSection || ""} onChange={handleChange} className={inputClass} />
+          <JoditEditor
+            ref={editorRef}
+            value={assignmentDetail.planningAndToolSection || ""}
+            config={{
+              ...joditConfig,
+              placeholder: "Enter problem statement..."
+            }}
+            onBlur={(newContent) => handleChange("planningAndToolSection", newContent)} />
           {errors.planningAndToolSection && <p className="text-red-500 text-sm mt-1">{errors.planningAndToolSection}</p>}
         </div>
+
         <div>
-          <label className="block mb-1 text-sm font-medium">Tool Strategies Approaches <span className="text-red-500">*</span></label>
-          <input type="text" name="toolStrategiesApproaches" value={assignmentDetail.toolStrategiesApproaches || ""} onChange={handleChange} className={inputClass} />
+          <label className="block mb-1 text-sm font-medium">Problem Statement <span className="text-red-500">*</span></label>
+
+          <JoditEditor
+            ref={editorRef}
+            value={assignmentDetail.toolStrategiesApproaches || ""}
+            config={{
+              ...joditConfig,
+              placeholder: "Enter problem statement..."
+            }}
+            onBlur={(newContent) => handleChange("toolStrategiesApproaches", newContent)}
+          />
           {errors.toolStrategiesApproaches && <p className="text-red-500 text-sm mt-1">{errors.toolStrategiesApproaches}</p>}
+
         </div>
+
+
+
+      {/* Navigation Buttons */}
+        <div className="flex justify-between mt-6">
+          <button onClick={handlePrevious} disabled={activeStep === 0} className="px-4 py-2 bg-gray-300 text-gray-800 rounded disabled:opacity-50">Previous</button>
+
+          <button onClick={handleNextOrSubmit} className="px-4 py-2 bg-indigo-600 text-white rounded">Save & Continue</button>
+        </div>
+
+        {submitStatus && <p className="mt-4 text-center text-green-600 font-medium">{submitStatus}</p>}
       </div>
-      <div className="flex justify-between mt-6">
-        <button onClick={handlePrevious} disabled={activeStep === 0} className="px-4 py-2 bg-gray-300 text-gray-800 rounded disabled:opacity-50">Previous</button>
-        <button onClick={handleNextOrSubmit} className="px-4 py-2 bg-indigo-600 text-white rounded">Save & Continue</button>
       </div>
-      {submitStatus && <p className="mt-4 text-center text-green-600 font-medium">{submitStatus}</p>}
-    </div>
-  );
+      );
 };
 
-export default FormC;
+ export default FormC;

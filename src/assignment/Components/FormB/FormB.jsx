@@ -1,4 +1,3 @@
-
 // ----------------------------------------------------------------------------
 import React, { useContext, useRef, useState } from "react";
 import DatePicker from "../Inputs/Datepicker";
@@ -64,6 +63,8 @@ const FormB = () => {
 
 
   const handleDob = (e, val) => {
+  
+    if (!val) return;
     const updated = { ...childProfile, dob: val };
     setChildProfile(updated);
     localStorage.setItem("childProfile", JSON.stringify(updated));
@@ -94,7 +95,8 @@ const FormB = () => {
       'ul', 'ol', '|',
       'font', 'fontsize', 'brush', 'paragraph', '|',
       'align', 'undo', 'redo', '|',
-      'cut', 'copy', 'paste'
+      
+      'cut', 'copy', 'paste',
     ],
     placeholder: "Enter medical history..."
   };
@@ -103,8 +105,8 @@ const FormB = () => {
 
 
   return (
-    <div className="p-6 w-full">
-      <h2 className="text-3xl font-bold text-indigo-700 mb-6">Child Profile Information</h2>
+    <div className="p-2 w-full ">
+      <h2 className="md:text-3xl text-[20px] font-bold text-indigo-700 mb-10">Child Profile Information</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
         <div>
           <label className="block text-sm font-medium mb-1">Name <span className="text-red-500">*</span></label>
@@ -150,62 +152,16 @@ const FormB = () => {
         </div>
       </div>
 
-
-{/* 
-      <div className="mb-6">
-        <label className="block text-sm font-medium mb-1">Medical History <span className="text-red-500">*</span></label>
-        <textarea name="medicalHistory" value={childProfile.medicalHistory || ""} onChange={handleChange} className="w-full min-h-[5rem] px-3 py-2 border rounded-md text-sm text-gray-700" />
-        {errors.medicalHistory && <p className="text-red-500 text-sm mt-1">{errors.medicalHistory}</p>}
-      </div> */}
-
-{/* ------------------------------------------------------------ */}
-
    <div className="mb-6">
         <label className="block text-sm font-medium mb-1">Medical History <span className="text-red-500">*</span></label>
         <JoditEditor
         ref={editorRef}
           value={childProfile.medicalHistory || ""}
           config={joditConfig}
-           onChange={handleMedicalHistoryChange}
+           onBlur={handleMedicalHistoryChange}
         />
         {errors.medicalHistory && <p className="text-red-500 text-sm mt-1">{errors.medicalHistory}</p>}
       </div>
-
-
-
- 
- {/* <div className="mb-6">
-  <label className="block text-sm font-medium mb-1">
-    Medical History <span className="text-red-500">*</span>
-  </label>
-
-  <JoditEditor
-    ref={useRef(null)}
-    value={childProfile.medicalHistory || ""}
-    config={{
-      readonly: false,
-      height: 200,
-    }}
-    onChange={(newContent) => {
-      const updated = { ...childProfile, medicalHistory: newContent };
-      setChildProfile(updated);
-      localStorage.setItem("childProfile", JSON.stringify(updated));
-      console.log("FormB saved to localStorage:", updated);
-      setSubmitStatus(null);
-    }}
-  />
-
-  {errors.medicalHistory && (
-    <p className="text-red-500 text-sm mt-1">{errors.medicalHistory}</p>
-  )}
-</div> */}
-
-
-
-
-
-
-
 
       <div className="flex justify-between mt-4">
         <button onClick={handlePrevious} disabled={activeStep === 0} className="px-4 py-2 bg-gray-300 text-gray-800 rounded disabled:opacity-50">Previous</button>

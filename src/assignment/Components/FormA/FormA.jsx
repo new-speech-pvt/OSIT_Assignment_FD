@@ -1,5 +1,3 @@
-
-// ------------------------------------------------------------------------------
 import React, { useContext, useState } from "react";
 import DatePicker from "../Inputs/Datepicker";
 import { OsitAssignmentContext } from "../../pages/OsitAssignmentProvider";
@@ -44,6 +42,7 @@ const FormA = () => {
   };
 
   const handleDob = (e, val) => {
+    if (!val) return;
     const updatedInfo = { ...participantInfo, dob: val };
     setParticipantInfo(updatedInfo);
     localStorage.setItem("participantInfo", JSON.stringify(updatedInfo));
@@ -66,8 +65,8 @@ const FormA = () => {
   const professions = ["Speech Therapist", "Physical Therapist", "Occupational Therapist", "Special Educator", "Psychologist", "Physiotherapist"];
 
   return (
-    <div className="p-6 w-full">
-      <h2 className="text-3xl font-bold text-indigo-700 mb-6">Participant Information</h2>
+    <div className="p-2 w-full ">
+      <h2 className=" md:text-3xl text-[20px]  font-bold text-indigo-700 mb-10 ">Participant Information</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-4">
         <div>
           <label className="block text-sm font-medium mb-1">First Name <span className="text-red-500">*</span></label>
