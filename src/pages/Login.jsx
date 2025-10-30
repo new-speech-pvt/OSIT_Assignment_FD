@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import { getUserFromLocal, saveUserToLocal } from "../Utils/auth";
 import { axiosClient } from "../Utils/axiosClient";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -44,15 +45,19 @@ export default function Login() {
     //  Reset Password Logic
     if (isReset) {
       if (!savedUser) {
-        alert("User not found!");
+        toast.error("user not found!")
+        // alert("User not found!");
         return;
       }
       if (savedUser.email === formData.email) {
         saveUserToLocal({ ...savedUser, password: "123456" });
-        alert("Password reset successfully! New password: 123456");
+        toast.success("Password reset successfully! New password: 123456")
+        // alert("Password reset successfully! New password: 123456");
+
         setIsReset(false);
       } else {
-        alert("Email does not match!");
+        toast.error("Email does not match!")
+        // alert("Email does not match!");
       }
       return;
     }
@@ -65,18 +70,21 @@ export default function Login() {
 
         if (response.data.success) {
           const user = response.data.data;
-          alert("Account created successfully!");
+          toast.success("Account created successfully!");
+          // alert("Account created successfully!");
           saveUserToLocal(user);
           login(user);
           navigate("/home");
         } else {
-          alert(response.data.message || "Signup failed!");
+          toast.error(response.data.message || "Signup failed!")
+          // alert(response.data.message || "Signup failed!");
         }
       } catch (error) {
         console.error("Signup Error:", error);
-        alert(
-          error.response?.data?.message || "Signup failed. Please try again!"
-        );
+        toast.error(error.response.data?.message || "Signup failed. Please try again!");
+        // alert(
+        //   error.response?.data?.message || "Signup failed. Please try again!"
+        // );
       }
 
       return;
@@ -89,16 +97,18 @@ export default function Login() {
 
       if (response.data.success) {
         const user = response.data?.data;
-        alert("Login success");
+        toast.success("Login success")
+        // alert("Login success");
         saveUserToLocal(user);
         login(user);
         navigate("/home");
       }
       //  Store user in LocalStorage
 
-      
+
     } catch (error) {
-      alert(error.response?.data?.message || "Invalid credentials!");
+      toast.error(error.response?.data?.message || "Invalid credentials!")
+      // alert(error.response?.data?.message || "Invalid credentials!");
     }
 
     setFormData({ email: "", password: "" });
@@ -112,8 +122,8 @@ export default function Login() {
           {isReset
             ? "Reset Your Password"
             : isLogin
-            ? "Sign In"
-            : "Create an account"}
+              ? "Sign In"
+              : "Create an account"}
         </h2>
 
         {isReset && (
@@ -132,11 +142,10 @@ export default function Login() {
               placeholder="enter your email"
               value={formData.email}
               onChange={handleChange}
-              className={`border rounded-lg p-3 mt-1 focus:outline-none focus:ring-1 ${
-                errors.email
-                  ? "border-red-600 focus:ring-red-600"
-                  : "focus:ring-[#604C91]"
-              }`}
+              className={`border rounded-lg p-3 mt-1 focus:outline-none focus:ring-1 ${errors.email
+                ? "border-red-600 focus:ring-red-600"
+                : "focus:ring-[#604C91]"
+                }`}
             />
             {errors.email && (
               <p className="text-red-600 text-xs mt-1">{errors.email}</p>
@@ -153,11 +162,10 @@ export default function Login() {
                 placeholder="password"
                 value={formData.password}
                 onChange={handleChange}
-                className={`border rounded-lg p-3 mt-1 focus:outline-none focus:ring-1 ${
-                  errors.password
-                    ? "border-red-600 focus:ring-red-600"
-                    : "focus:ring-[#604C91]"
-                }`}
+                className={`border rounded-lg p-3 mt-1 focus:outline-none focus:ring-1 ${errors.password
+                  ? "border-red-600 focus:ring-red-600"
+                  : "focus:ring-[#604C91]"
+                  }`}
               />
               <span
                 onClick={() => setShowPassword(!showPassword)}
@@ -171,6 +179,7 @@ export default function Login() {
             </div>
           )}
 
+          
           <button
             type="submit"
             className="w-full bg-[#604C91] text-white py-3 rounded-lg font-medium hover:bg-[#6a569e] transition-all"
@@ -178,8 +187,8 @@ export default function Login() {
             {isReset
               ? "Reset Password"
               : isLogin
-              ? "Sign in"
-              : "Create Account"}
+                ? "Sign in"
+                : "Create Account"}
           </button>
         </form>
 

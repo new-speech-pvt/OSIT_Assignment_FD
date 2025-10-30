@@ -2,10 +2,20 @@ import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import ProtectedRoute from "./ProtectedRoute";
-
+import CardsSection from "./pages/CardDetails";
+import { Toaster } from "react-hot-toast";
 const App = () => {
   return (
     <>
+    
+<Toaster
+        toastOptions={{
+          success: {
+            duration: 5000,
+          },
+        }}
+      />
+
       <Routes>
         {/* Login Page */}
 
@@ -14,6 +24,7 @@ const App = () => {
         <Route element={<ProtectedRoute />}>
           <Route path="/home" element={<Home />} />
         </Route>
+        <Route path="/cardsection" element={<CardsSection/>}/> 
       </Routes>
     </>
   );
