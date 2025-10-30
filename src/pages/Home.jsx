@@ -15,9 +15,10 @@
 
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
-import AssignmentForm2 from "../assignment/pages/AssignmentForm2";
-import OsitAssignmentProvider from "../assignment/pages/OsitAssignmentProvider";
+// import AssignmentForm2 from "../assignment/pages/AssignmentForm2";
+// import OsitAssignmentProvider from "../assignment/pages/OsitAssignmentProvider";
 import { saveUserToLocal } from "../Utils/auth";
+import CardSection from "./CardDetails";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -55,9 +56,10 @@ const Home = () => {
 
       {/* Main Content */}
       <main className="p-4">
-        <OsitAssignmentProvider>
+        {/* <OsitAssignmentProvider>
           <AssignmentForm2 />
-        </OsitAssignmentProvider>
+        </OsitAssignmentProvider> */}
+        <CardSection/>
       </main>
     </div>
   );

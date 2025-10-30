@@ -6,7 +6,9 @@ import { useAuthStore } from "./store/authStore";
 import UserRoutes from "./pages/UserRoutes";
 import TherapistRoute from "./pages/TherapistRoute";
 import Login from "./pages/Login";
-
+import ProtectedRoute from "./ProtectedRoute";
+import CardsSection from "./pages/CardDetails";
+import { Toaster } from "react-hot-toast";
 const App = () => {
   const { user } = useAuthStore();
   if (!user) {
@@ -14,6 +16,25 @@ const App = () => {
   }
   return (
     <>
+    
+<Toaster
+        toastOptions={{
+          success: {
+            duration: 5000,
+          },
+        }}
+      />
+
+      <Routes>
+        {/* Login Page */}
+
+        <Route path="/" element={<Login />} />
+
+        <Route element={<ProtectedRoute />}>
+          <Route path="/home" element={<Home />} />
+        </Route>
+        <Route path="/cardsection" element={<CardsSection/>}/> 
+      </Routes>
       <div>
         {user?.role === "THERAPIST" ? <TherapistRoute /> : <UserRoutes />}
       </div>
