@@ -101,7 +101,6 @@ export default function Login() {
         // alert("Login success");
         saveUserToLocal(user);
         login(user);
-        navigate("/home");
       }
       //  Store user in LocalStorage
 
@@ -111,7 +110,6 @@ export default function Login() {
       // alert(error.response?.data?.message || "Invalid credentials!");
     }
 
-    setFormData({ email: "", password: "" });
     setErrors({});
   };
 

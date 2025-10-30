@@ -1,6 +1,6 @@
 import TherapistNavbar from "../components/Therapist/TherapistNavbar";
 import Footer from "../components/Footer";
-import { Route, Routes } from "react-router";
+import { Route, Routes,Navigate } from "react-router-dom";
 import Assignment from "./Assignment";
 import TherapistDashboard from "./TherapistDashboard";
 import SpecificParticipant from "./SpecificParticipant";
@@ -13,7 +13,8 @@ const TherapistRoute = () => {
         <TherapistNavbar />
         <div className="w-full h-dvh">
           <Routes>
-            <Route path="/dashboard" element={<TherapistDashboard />} />
+            <Route path="/" element={<TherapistDashboard /> }/>
+
             <Route path="/assignment" element={<Assignment />} />
             <Route
               path="/assignment/:participantId"

@@ -10,7 +10,7 @@ const TherapistNavbar = () => {
   const navLinks = [
     {
       name: "Dashboard",
-      pathname: "/dashboard",
+      pathname: "/",
     },
     {
       name: "Assignment",
@@ -64,7 +64,7 @@ const TherapistNavbar = () => {
 
       {/* Mobile Navigation */}
       <div className="md:hidden bg-[#8879AD] text-white flex justify-around py-3 text-sm font-medium">
-        <Link to="/dashboard" className="hover:text-[#FFD2E1]">
+        <Link to="/ " className="hover:text-[#FFD2E1]">
           Dashboard
         </Link>
         <Link to="/assignment" className="hover:text-[#FFD2E1]">
