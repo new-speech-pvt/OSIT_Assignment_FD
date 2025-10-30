@@ -37,11 +37,17 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Top Navbar / Header Section */}
-      <header className="flex justify-between items-center p-4 bg-[#604C91] text-white shadow-md">
-        <h1 className="text-xl font-semibold">Welcome Home 🎉</h1>
+      <header className="flex justify-between items-center p-4 bg-white text-white shadow-md">
+        <div className="flex items-center bg-white">
+          <img
+            src="https://gmsassets.z29.web.core.windows.net/public/logo1.png"
+            alt="Speechgears Research Institute"
+            className="w-[294.9px] md:w-[427.7px] mx-0"
+          />
+        </div>{" "}
         <button
           onClick={handleLogout}
-          className="bg-white text-[#604C91] font-medium px-4 py-2 rounded-lg hover:bg-gray-100 transition-all"
+          className="bg-[#E16F9F] text-white font-medium px-4 py-2 rounded-lg hover:bg-[#D73F7F] transition-all"
         >
           Logout
         </button>
