@@ -19,10 +19,13 @@ import { useAuthStore } from "../store/authStore";
 // import OsitAssignmentProvider from "../assignment/pages/OsitAssignmentProvider";
 import { saveUserToLocal } from "../Utils/auth";
 import CardSection from "./CardDetails";
+import { useEffect } from "react";
+import { axiosClient } from "../Utils/axiosClient";
 
 const Home = () => {
   const navigate = useNavigate();
-  const { logout } = useAuthStore();
+  const { logout, user } = useAuthStore();
+  console.log(user);
 
   const handleLogout = () => {
     // Zustand se user hata do
@@ -34,6 +37,19 @@ const Home = () => {
     // Login page par redirect
     navigate("/");
   };
+  const getUserAssignment = async () => {
+    try {
+      const response = await axiosClient.get(
+        `/osit-assignments/participant/${user?.email}`
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getUserAssignment();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -59,7 +75,7 @@ const Home = () => {
         {/* <OsitAssignmentProvider>
           <AssignmentForm2 />
         </OsitAssignmentProvider> */}
-        <CardSection/>
+        <CardSection />
       </main>
     </div>
   );
