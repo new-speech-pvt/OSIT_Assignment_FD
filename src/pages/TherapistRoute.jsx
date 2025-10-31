@@ -1,9 +1,9 @@
 import TherapistNavbar from "../components/Therapist/TherapistNavbar";
 import Footer from "../components/Footer";
-import { Route, Routes,Navigate } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Assignment from "./Assignment";
 import TherapistDashboard from "./TherapistDashboard";
-import SpecificParticipant from "./SpecificParticipant";
+import OSITAssignmentPreview from "./OSITAssignmentPreview";
 
 const TherapistRoute = () => {
   return (
@@ -13,12 +13,12 @@ const TherapistRoute = () => {
         <TherapistNavbar />
         <div className="w-full h-dvh">
           <Routes>
-            <Route path="/" element={<TherapistDashboard /> }/>
+            <Route path="/" element={<TherapistDashboard />} />
 
             <Route path="/assignment" element={<Assignment />} />
             <Route
-              path="/assignment/:participantId"
-              element={<SpecificParticipant />}
+              path="/assignment/:ositAssigmnentId"
+              element={<OSITAssignmentPreview />}
             />
           </Routes>
         </div>

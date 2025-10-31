@@ -14,11 +14,9 @@ const Assignment = () => {
     const getAllAssignments = async () => {
       setLoading(true);
       try {
-        const response = await axiosClient.get(`/osit-assignments`, {
-          headers: {
-            Authorization: `Bearer ${user?.token}`,
-          },
-        });
+        const response = await axiosClient.get(
+          `/osit-assignments/therapist/assignments`
+        );
 
         console.log(" Response:", response);
         setData(response?.data?.data?.assignments);
