@@ -15,6 +15,7 @@ const AssignmenTableData = ({ data }) => {
     { label: "City", key: "city" },
     { label: "Therapist Type", key: "therapistType" },
     { label: "Status", key: "status" },
+    { label: "Score", key: "score" },
   ];
 
   if (!data || data.length === 0) {
@@ -26,7 +27,7 @@ const AssignmenTableData = ({ data }) => {
   }
 
   return (
-    <div className="overflow-x-auto bg-white shadow-lg rounded-xl p-4">
+    <div className="overflow-x-auto bg-white shadow-lg rounded-xl p-4 mt-20">
       <h2 className="text-2xl font-bold mb-6 text-gray-800 text-center">
         Participants List
       </h2>
@@ -70,6 +71,18 @@ const AssignmenTableData = ({ data }) => {
                 >
                   View
                 </Link>
+              </td>
+              <td>
+                <div className="bg-[#6fe175] hover:bg-[#97e16f] text-white px-4 py-2 rounded-lg shadow transition">
+                  {item?.scoring ? (
+                    <span>
+                      {item?.scoring?.totalObtained}/
+                      {item?.scoring?.totalPossible}
+                    </span>
+                  ) : (
+                    "--"
+                  )}
+                </div>
               </td>
             </tr>
           ))}

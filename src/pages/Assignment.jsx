@@ -3,6 +3,7 @@ import { IoIosSearch } from "react-icons/io";
 import { useEffect, useState } from "react";
 import { axiosClient } from "../Utils/axiosClient";
 import { getUserFromLocal } from "../Utils/auth";
+import { Loader2 } from "lucide-react";
 
 const Assignment = () => {
   const user = getUserFromLocal("authUser");
@@ -30,9 +31,12 @@ const Assignment = () => {
     getAllAssignments();
   }, []);
 
-  if (loading) {
-    return <div className="mt-20 text-center">Loading.....</div>;
-  }
+  if (loading)
+    return (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="animate-spin text-[#604C91] w-10 h-10" />
+      </div>
+    );
   return (
     <>
       {/* Header */}

@@ -1,4 +1,3 @@
-
 import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store/authStore";
 import UserRoutes from "./pages/UserRoutes";
@@ -11,8 +10,7 @@ const App = () => {
   }
   return (
     <>
-    
-<Toaster
+      <Toaster
         toastOptions={{
           success: {
             duration: 5000,
