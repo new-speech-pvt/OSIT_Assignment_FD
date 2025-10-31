@@ -1,14 +1,13 @@
-export default function Footer() {
+import React from "react";
+
+const Footer = () => {
   return (
     <footer className="bg-[#8879AD] text-white py-4 mt-10">
-      <div className="max-w-7xl mx-auto text-center text-sm">
-        <p>
-          © {new Date().getFullYear()} MyTherapy | Designed with 💜 by Team
-        </p>
-        <p className="text-[#EB9FBF] mt-1">
-          Empowering Therapists. Enhancing Care.
-        </p>
+      <div className="w-full mx-auto text-center text-sm">
+        <p>© All copyrights Designed by IT Team</p>
       </div>
     </footer>
   );
-}
+};
+
+export default Footer;
