@@ -1,12 +1,11 @@
-// CardsSection.jsx
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import CardItem from "./CardItem";
+import { axiosClient } from "../../Utils/axiosClient";
 
 const CardsSection = ({
   title = "USER DASHBOARD",
-  apiUrl,                      // API endpoint
-  transformData,               // optional: format API data
+  apiUrl,              
+  transformData,     
   onScoreClick,
   onPreviewClick,
   onDownloadClick,
@@ -16,13 +15,17 @@ const CardsSection = ({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // ✅ Fetch API Data
   useEffect(() => {
     const fetchUsers = async () => {
+      if (!apiUrl) return;
       try {
         setLoading(true);
-        const res = await axios.get(apiUrl);
-        const formatted = transformData ? transformData(res.data) : res.data;
+        const { data } = await axiosClient.get(apiUrl);
+        console.log("API response:", data);
+
+      
+        const response = data?.data || data?.assignments || data || [];
+        const formatted = transformData ? transformData(response) : response;
         setUsers(formatted);
       } catch (err) {
         console.error(err);
@@ -32,27 +35,27 @@ const CardsSection = ({
       }
     };
 
-    if (apiUrl) fetchUsers();
-  }, [apiUrl]);
+    fetchUsers();
+  }, [apiUrl, transformData]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0A0825] via-[#1B1440] to-[#2C1E60] text-white flex flex-col items-center p-8">
-      
-      {/* Header */}
       <h1 className="text-4xl font-extrabold mb-12 tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-[#B0A6C8] to-[#E16F9F] drop-shadow-lg">
         {title}
       </h1>
 
-      {/* Loading & Error */}
       {loading && <p className="text-gray-400">Loading...</p>}
       {error && <p className="text-red-400">{error}</p>}
 
-      {/* Cards */}
-      {!loading && !error && (
+      {!loading && !error && users.length === 0 && (
+        <p className="text-gray-400">No data found.</p>
+      )}
+
+      {!loading && !error && users.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 w-full max-w-6xl">
-          {users.map((user, index) => (
+          {users.map((user, idx) => (
             <CardItem
-              key={index}
+              key={user.id || idx}
               user={user}
               onScoreClick={onScoreClick}
               onPreviewClick={onPreviewClick}
@@ -62,12 +65,11 @@ const CardsSection = ({
         </div>
       )}
 
-      {/* Footer */}
-      <p className="text-sm text-gray-400 mt-12 text-center max-w-md">
-        {footerText}
-      </p>
+      <p className="text-sm text-gray-400 mt-12 text-center max-w-md">{footerText}</p>
     </div>
   );
 };
 
 export default CardsSection;
+
+
