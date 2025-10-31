@@ -153,6 +153,7 @@ const Home = () => {
     }
   };
 
+
   useEffect(() => {
     checkAssignment();
   }, [user?.email]);
@@ -167,6 +168,13 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="flex justify-between items-center p-4 bg-white shadow-md">
+        <img
+          src="https://gmsassets.z29.web.core.windows.net/public/logo1.png"
+          alt="Speechgears Research Institute"
+          className="w-[294.9px] md:w-[427.7px]"
+        />
       {/* Header */}
       <header className="flex justify-between items-center p-4 bg-white shadow-md">
         <img
@@ -197,4 +205,5 @@ const Home = () => {
 };
 
 export default Home;
+
 

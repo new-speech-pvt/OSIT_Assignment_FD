@@ -22,7 +22,9 @@ const OSITAssignmentPreview = () => {
   useEffect(() => {
     const fetchAssignment = async () => {
       try {
-        const res = await axiosClient.get(`/osit-assignments/${ositAssigmnentId}`);
+        const res = await axiosClient.get(
+          `/osit-assignments/${ositAssigmnentId}`
+        );
 
         setData(res.data?.data);
       } catch (err) {
@@ -44,7 +46,7 @@ const OSITAssignmentPreview = () => {
   if (loading)
     return (
       <div className="flex items-center justify-center h-64">
-        <Loader2 className="animate-spin text-blue-500 w-8 h-8" />
+        <Loader2 className="animate-spin text-[#604C91] w-8 h-8" />
       </div>
     );
 
@@ -77,7 +79,7 @@ const OSITAssignmentPreview = () => {
       {/* Therapist + Participant Info */}
       <div className="grid md:grid-cols-2 gap-6 mb-8">
         <div className="p-5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
-          <h2 className="text-lg font-semibold mb-3 text-blue-600">
+          <h2 className="text-lg font-semibold mb-3 text-[#604C91]">
             Therapist Details
           </h2>
           <p>
@@ -88,7 +90,7 @@ const OSITAssignmentPreview = () => {
           </p>
         </div>
         <div className="p-5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
-          <h2 className="text-lg font-semibold mb-3 text-blue-600">
+          <h2 className="text-lg font-semibold mb-3 text-[#604C91]">
             Participant Info
           </h2>
           <p>
@@ -106,7 +108,7 @@ const OSITAssignmentPreview = () => {
 
       {/* Child Profile */}
       <div className="p-5 rounded-xl mb-8 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
-        <h2 className="text-lg font-semibold mb-3 text-blue-600">
+        <h2 className="text-lg font-semibold mb-3 text-[#604C91]">
           Child Profile
         </h2>
         <p>
@@ -139,7 +141,7 @@ const OSITAssignmentPreview = () => {
 
       {/* Assignment Details */}
       <div className="p-5 rounded-xl mb-8 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
-        <h2 className="text-lg font-semibold mb-3 text-blue-600">
+        <h2 className="text-lg font-semibold mb-3 text-[#604C91]">
           Assignment Details
         </h2>
 
@@ -164,7 +166,7 @@ const OSITAssignmentPreview = () => {
 
       {/* Intervention Plan */}
       <div className="mb-8">
-        <h2 className="text-lg font-semibold mb-4 text-blue-600">
+        <h2 className="text-lg font-semibold mb-4 text-[#604C91]">
           Intervention Plan
         </h2>
 
@@ -223,7 +225,7 @@ const OSITAssignmentPreview = () => {
       {/* Scoring Table */}
       {scoring ? (
         <div className="p-5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
-          <h2 className="text-lg font-semibold mb-4 text-blue-600">
+          <h2 className="text-lg font-semibold mb-4 text-[#604C91]">
             Assessment Scoring
           </h2>
           <div className="overflow-x-auto">
@@ -256,14 +258,14 @@ const OSITAssignmentPreview = () => {
 
           <div className="mt-4 text-right text-gray-700 dark:text-gray-200 font-medium">
             Total:{" "}
-            <span className="text-blue-600 dark:text-blue-400 font-semibold">
+            <span className="text-[#604C91] dark:text-[#6d5c96] font-semibold">
               {scoring?.totalObtained}
             </span>{" "}
             / {scoring?.totalPossible}
           </div>
         </div>
       ) : (
-        <OSITScoringForm ositAssigmnentId={ositAssigmnentId}/>
+        <OSITScoringForm ositAssigmnentId={ositAssigmnentId} />
       )}
     </motion.div>
   );

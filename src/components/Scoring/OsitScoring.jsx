@@ -20,7 +20,7 @@ const CardContent = ({ children, className = "" }) => (
 const Button = ({ children, className = "", ...props }) => (
   <button
     {...props}
-    className={`bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+    className={`bg-[#69559c] hover:bg-[#604C91] text-white px-6 py-2 rounded-xl text-sm font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
   >
     {children}
   </button>
@@ -56,9 +56,11 @@ const OSITScoringForm = ({ ositAssigmnentId }) => {
   };
 
   const total = scores.reduce(
-    (sum, item) => sum + (parseFloat(item.obtainedMarks) || 0),
+    (sum, item) => sum + (parseFloat(item.obtainedMarks) || 0), 0 );
 
-    0
+     // ✅ Check if all scores are filled
+  const isFormComplete = scores.every(
+    (item) => item.obtainedMarks !== "" && !isNaN(item.obtainedMarks)
   );
 
   const handleSubmit = async (e) => {
@@ -123,7 +125,7 @@ const OSITScoringForm = ({ ositAssigmnentId }) => {
                     onChange={(e) =>
                       handleChange(index, "obtainedMarks", e.target.value)
                     }
-                    className="w-full sm:w-20 px-3 py-2 border border-gray-300 rounded-md text-center text-sm focus:ring-2 focus:ring-blue-400 outline-none"
+                    className="w-full sm:w-20 px-3 py-2 border border-gray-300 rounded-md text-center text-sm focus:ring-2 focus:ring-[#8879AD] outline-none"
                     placeholder="Score"
                   />
                   <input
@@ -132,7 +134,7 @@ const OSITScoringForm = ({ ositAssigmnentId }) => {
                     onChange={(e) =>
                       handleChange(index, "remarks", e.target.value)
                     }
-                    className="w-full sm:w-60 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-400 outline-none"
+                    className="w-full sm:w-60 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-[#8879AD] outline-none"
                     placeholder="Optional remark"
                   />
                 </div>
@@ -144,13 +146,13 @@ const OSITScoringForm = ({ ositAssigmnentId }) => {
         <div className="mt-6 text-center">
           <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
             Total:{" "}
-            <span className="text-blue-600 dark:text-blue-400">{total}</span> /{" "}
+            <span className="text-[#604C91] dark:text-[#6a5995]">{total}</span> /{" "}
             50
           </p>
         </div>
 
         <div className="mt-6 flex justify-center">
-          <Button type="submit" className="w-full sm:w-auto">
+          <Button type="submit" className="w-full sm:w-auto " disabled={!isFormComplete}>
             Submit Scoring
           </Button>
         </div>
