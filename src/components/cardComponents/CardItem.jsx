@@ -1,19 +1,15 @@
-    // CardItem.jsx
 import React from "react";
 
-const CardItem = ({ user, onScoreClick, onPreviewClick, onDownloadClick }) => {
+const CardItem = ({ user,assignment,participantInfo, onScoreClick, onPreviewClick, onDownloadClick }) => {
   return (
-    <div
-      className="relative bg-gradient-to-br from-[#3C2C72] via-[#4A378B] to-[#5A43A4] p-6 rounded-2xl shadow-2xl
-                 flex flex-col justify-between items-center
-                 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 hover:shadow-[0_0_25px_#B0A6C8]"
-    >
+    <div className="relative bg-gradient-to-br from-[#3C2C72] via-[#4A378B] to-[#5A43A4] p-6 rounded-2xl shadow-2xl flex flex-col justify-between items-center transition-all duration-500 transform hover:-translate-y-2 hover:scale-105 hover:shadow-[0_0_25px_#B0A6C8]">
       {/* Glowing border */}
       <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#D73F7F] to-[#B0A6C8] opacity-0 hover:opacity-20 blur-xl transition-opacity duration-500"></div>
 
       {/* User Name */}
       <h2 className="text-2xl font-semibold mb-8 text-[#FFF] tracking-wide drop-shadow-md z-10">
-        {user.name}
+        {participantInfo?.fName}{" "}{participantInfo?.lName}
+
       </h2>
 
       {/* Action Buttons */}
@@ -44,3 +40,5 @@ const CardItem = ({ user, onScoreClick, onPreviewClick, onDownloadClick }) => {
 };
 
 export default CardItem;
+
+

@@ -1,31 +1,44 @@
-// CardDetails.jsx
-import React from "react";
-import CardsSection from "../components/cardComponents/CardsSection";
+import CardsSection from "../components/cardComponents/CardsSection"
+import { useAuthStore } from "../store/authStore";
 
 const CardDetails = () => {
-  const apiUrl = "https://jsonplaceholder.typicode.com/users";
+const { user } = useAuthStore();
+  // const navigate = useNavigate(); // agar redirect chahiye
 
-  const handleScore = (user) => {
-    alert(`Score clicked for ${user.name}`);
-  };
+  const apiUrl = `/osit-assignments/participant/${user?.email}`;
 
-  const handlePreview = (user) => {
-    alert(`Preview clicked for ${user.name}`);
-  };
+  // const handleScore = (assignment) => {
+  //   console.log("Score clicked:", assignment);
+  //   // Navigate to scoring page
+  //   navigate(`/score/${assignment.id}`);
+  // };
 
-  const handleDownload = (user) => {
-    alert(`Download clicked for ${user.name}`);
+  // const handlePreview = (assignment) => {
+  //   console.log("Preview clicked:", assignment);
+  //   // Open preview modal or page
+  // };
+
+  // const handleDownload = (assignment) => {
+  //   console.log("Download clicked:", assignment);
+    // Trigger PDF download
+  // };
+    const transform = (response) => {
+    const assignments = response?.data?.assignments || [];
+    return assignments.map((item) => ({
+      id: item.assignmentId,
+      name: item.childProfile?.name || item.assignmentDetail?.title || "Assignment",
+    }));
   };
 
   return (
     <CardsSection
-      title="Registered Users"
+      title="Your Assignments"
       apiUrl={apiUrl}
-      transformData={(data) => data.map((u) => ({ name: u.name, email: u.email }))}
-      onScoreClick={handleScore}
-      onPreviewClick={handlePreview}
-      onDownloadClick={handleDownload}
-      footerText="Each card represents a registered user."
+      transformData={transform}
+      // onScoreClick={handleScore}
+      // onPreviewClick={handlePreview}
+      // onDownloadClick={handleDownload}
+      footerText="Score, preview or download your submitted assignments."
     />
   );
 };

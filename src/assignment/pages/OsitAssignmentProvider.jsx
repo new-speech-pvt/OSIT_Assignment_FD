@@ -1,16 +1,15 @@
 // ----------------------------------------------------------------------------------
 import { createContext, useState, useEffect } from "react"
 import React from 'react'
-import axios from "axios";
-import FormA from "../Components/FormA/FormA";
 import FormB from "../Components/FormB/FormB";
 import FormC from "../Components/FormC/FormC";
 import FormD from "../Components/FormD/FormD";
+import { axiosClient } from "../../Utils/axiosClient";
 
 const OsitAssignmentContext = createContext();
 
 const OsitAssignmentProvider = ({ children }) => {
-    const steps = ["Form A", "Form B", "Form C", "Form D"];
+    const steps = ["Form B", "Form C", "Form D"];
 
     const initialSession = { goal: [""], activity: [""], childResponse: "", date: "" };
     const weeks = ["week1", "week2", "week3", "week4", "week5"];
@@ -25,18 +24,18 @@ const OsitAssignmentProvider = ({ children }) => {
     };
 
     const [activeStep, setActiveStep] = useState(0);
-    const [participantInfo, setParticipantInfo] = useState({
-        fName: '',
-        lName: '',
-        gender: '',
-        dob: '',
-        phone: '',
-        email: '',
-        state: '',
-        city: '',
-        therapistType: '',
-        enrollmentId: ''
-    });
+    // const [participantInfo, setParticipantInfo] = useState({
+    //     fName: '',
+    //     lName: '',
+    //     gender: '',
+    //     dob: '',
+    //     phone: '',
+    //     email: '',
+    //     state: '',
+    //     city: '',
+    //     therapistType: '',
+    //     enrollmentId: ''
+    // });
 
     const [childProfile, setChildProfile] = useState({
         name: '',
@@ -62,10 +61,10 @@ const OsitAssignmentProvider = ({ children }) => {
     useEffect(() => {
         const loadFromLocalStorage = () => {
             try {
-                const savedFormA = localStorage.getItem('participantInfo');
-                if (savedFormA) {
-                    setParticipantInfo(JSON.parse(savedFormA));
-                }
+                // const savedFormA = localStorage.getItem('participantInfo');
+                // if (savedFormA) {
+                //     setParticipantInfo(JSON.parse(savedFormA));
+                // }
                 const savedFormB = localStorage.getItem('childProfile');
                 if (savedFormB) {
                     setChildProfile(JSON.parse(savedFormB));
@@ -119,18 +118,18 @@ const OsitAssignmentProvider = ({ children }) => {
         });
 
         // Reset all states
-        setParticipantInfo({
-            fName: '',
-            lName: '',
-            gender: '',
-            dob: '',
-            phone: '',
-            email: '',
-            state: '',
-            city: '',
-            therapistType: '',
-            enrollmentId: ''
-        });
+        // setParticipantInfo({
+        //     fName: '',
+        //     lName: '',
+        //     gender: '',
+        //     dob: '',
+        //     phone: '',
+        //     email: '',
+        //     state: '',
+        //     city: '',
+        //     therapistType: '',
+        //     enrollmentId: ''
+        // });
         setChildProfile({
             name: '',
             dob: '',
@@ -170,18 +169,20 @@ const OsitAssignmentProvider = ({ children }) => {
 
             // Transform data to match backend structure
             const transformedData = {
-                participantInfo: {
-                    fName: participantInfo.fName || '',
-                    lName: participantInfo.lName || '',
-                    gender: participantInfo.gender || '',
-                    dob: formatDate(participantInfo.dob),
-                    phone: participantInfo.phone || '',
-                    email: participantInfo.email || '',
-                    state: participantInfo.state || '',
-                    city: participantInfo.city || '',
-                    therapistType: participantInfo.therapistType || '',
-                    enrollmentId: participantInfo.enrollmentId || 'DEFAULT123',
-                },
+                // participantInfo: {
+                //     fName: participantInfo.fName || '',
+                //     lName: participantInfo.lName || '',
+                //     gender: participantInfo.gender || '',
+                //     dob: formatDate(participantInfo.dob),
+                //     phone: participantInfo.phone || '',
+                //     email: participantInfo.email || '',
+                //     state: participantInfo.state || '',
+                //     city: participantInfo.city || '',
+                //     therapistType: participantInfo.therapistType || '',
+                //     enrollmentId: participantInfo.enrollmentId || 'DEFAULT123',
+                // },
+
+
                 childProfile: {
                     name: childProfile.name || '',
                     dob: formatDate(childProfile.dob),
@@ -211,6 +212,7 @@ const OsitAssignmentProvider = ({ children }) => {
                 transformedData.interventionPlan[week].sessions = transformedData.interventionPlan[week].sessions.map((session, index) => ({
                     ...session,
                     sessionNo: index + 1,
+                    date: formatDate(session.date)
                 }));
             });
 
@@ -218,25 +220,18 @@ const OsitAssignmentProvider = ({ children }) => {
 
             // API call
 
-            const token = localStorage.getItem("token");
-            
-            const response = await axios.post(`http://localhost:3000/osit-assignments`,
 
-                transformedData,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
+            const response = await axiosClient.post(`http://localhost:3001/osit-assignments`,
 
+                transformedData
 
             );
             console.log("API Response:", response);
 
             // Reset forms and show success
-            resetAllForms();
-            setSubmitStatus("Form submitted successfully");
-            setIsFormSubmitted(true);
+            // resetAllForms();
+            // setSubmitStatus("Form submitted successfully");
+            // setIsFormSubmitted(true);
 
         } catch (error) {
             console.log("API Error:", error.response?.data || error);
@@ -246,8 +241,8 @@ const OsitAssignmentProvider = ({ children }) => {
 
     return (
         <OsitAssignmentContext.Provider value={{
-            participantInfo,
-            setParticipantInfo,
+            // participantInfo,
+            // setParticipantInfo,
             childProfile,
             setChildProfile,
             assignmentDetail,

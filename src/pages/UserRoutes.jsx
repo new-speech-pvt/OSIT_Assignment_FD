@@ -1,15 +1,21 @@
 import React from "react";
-import Home from "../pages/Home";
 import Login from "./Login";
 import ProtectedRoute from "../ProtectedRoute";
 import { Route, Routes } from "react-router";
+import HomePage from "./HomePage";
+import OSITAssignmentPreview from "./OSITAssignmentPreview";
 
 const UserRoutes = () => {
   return (
     <div>
       <Routes>
         <Route element={<ProtectedRoute />}>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/assignment/:ositAssigmnentId"
+            element={<OSITAssignmentPreview />}
+          />
+
         </Route>
       </Routes>
     </div>
