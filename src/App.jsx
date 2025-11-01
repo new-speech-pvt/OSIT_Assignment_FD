@@ -1,8 +1,8 @@
 import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store/authStore";
-import UserRoutes from "./pages/UserRoutes";
-import TherapistRoute from "./pages/TherapistRoute";
-import Login from "./pages/Login";
+import UserRoutes from "./user/UserRoutes";
+import TherapistRoute from "./therapist/TherapistRoute";
+import Login from "./components/Login";
 const App = () => {
   const { user } = useAuthStore();
 

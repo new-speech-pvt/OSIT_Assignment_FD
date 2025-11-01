@@ -1,7 +1,7 @@
-
-import React, { useContext, useState } from "react";
-import { OsitAssignmentContext } from "../../pages/OsitAssignmentProvider";
-import DatePicker from "../Inputs/Datepicker";
+import React, { useContext, useState, useRef, useEffect } from "react";
+import { OsitAssignmentContext } from "../contexts/OsitAssignmentContext";
+import DatePicker from "../../components/Inputs/Datepicker";
+import { Calendar, Plus, Minus, Target, Activity, MessageSquare, Wrench } from "lucide-react";
 
 const FormD = () => {
   const {
@@ -18,6 +18,20 @@ const FormD = () => {
 
   const [expandedWeek, setExpandedWeek] = useState("week1");
   const [errors, setErrors] = useState({});
+  const weekRefs = useRef({});
+
+  // Scroll prevention effect
+  useEffect(() => {
+    const handleScroll = (e) => {
+      // Prevent automatic scrolling when weeks expand/collapse
+      if (e.target.closest('[data-prevent-scroll]')) {
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener('scroll', handleScroll, true);
+    return () => document.removeEventListener('scroll', handleScroll, true);
+  }, []);
 
   const validateForm = () => {
     const newErrors = {};
@@ -51,12 +65,26 @@ const FormD = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const toggleWeek = (week) => setExpandedWeek(prev => prev === week ? "" : week);
+  const toggleWeek = (week) => {
+    // Store current scroll position
+    const currentScroll = window.scrollY;
+    
+    setExpandedWeek(prev => {
+      const newExpandedWeek = prev === week ? "" : week;
+      
+      // Restore scroll position after state update
+      setTimeout(() => {
+        window.scrollTo(0, currentScroll);
+      }, 0);
+      
+      return newExpandedWeek;
+    });
+  };
 
   const updateInterventionPlan = (updatedPlan) => {
     setInterventionPlan(updatedPlan);
     localStorage.setItem("interventionPlan", JSON.stringify(updatedPlan));
-    console.log("FormD saved to localStorage:", updatedPlan);
+    setSubmitStatus(null);
   };
 
   const handleWeekChange = (week, index, field, value) => {
@@ -64,9 +92,7 @@ const FormD = () => {
     updatedWeek[index] = { ...updatedWeek[index], [field]: value };
     const updatedPlan = { ...interventionPlan, [week]: updatedWeek };
     updateInterventionPlan(updatedPlan);
-    // 
     setSubmitStatus(null);
-
   };
 
   const handleAddSession = (week) => {
@@ -156,77 +182,108 @@ const FormD = () => {
   };
 
   const handleNextOrSubmit = async () => {
-    console.log("Submit button clicked");
-    if (!validateForm()) {
-      console.log("Validation failed");
-      return;
-    }
+    if (!validateForm()) return;
     setSubmitStatus("Submitting...");
-    console.log("Calling handleFormCompletion...");
     try {
       await handleFormCompletion();
-      console.log("handleFormCompletion completed");
     } catch (error) {
       console.error("Error in handleFormCompletion:", error);
       setSubmitStatus("Submission failed");
     }
-
   };
 
-  const inputClass = "w-full px-3 py-2 border rounded-md text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-indigo-400";
+  const inputClass = "w-full px-3 py-3 border border-body-30 rounded-lg text-body-100 focus:outline-none focus:ring-2 focus:ring-primary-50 focus:border-primary-50 transition-all duration-200 bg-white";
 
   return (
-    <div className="p-1  md:w-full sm:w-11/12 mx-auto space-y-6 ">
-      <h2 className="md:text-3xl text-[30px] font-bold text-indigo-700 mb-10">Intervention Plan</h2>
+    <div className="w-full space-y-6" data-prevent-scroll>
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-6">
+        <div className="w-10 h-10 md:w-12 md:h-12 bg-secondary-70 rounded-xl flex items-center justify-center">
+          <Calendar className="w-5 h-5 md:w-6 md:h-6 text-white" />
+        </div>
+        <div>
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-body-100">Intervention Plan</h2>
+          <p className="text-body-50 text-sm">Weekly sessions and therapeutic activities</p>
+        </div>
+      </div>
 
+      {/* Weeks */}
       {weeks.map((week, wIndex) => (
-        <div key={week} className="bg-white shadow-lg rounded-md overflow-hidden">
+        <div 
+          key={week} 
+          className="bg-white border border-body-30 rounded-xl overflow-hidden"
+          ref={el => weekRefs.current[week] = el}
+        >
           <button
             type="button"
-            className="w-full flex justify-between items-center p-4 bg-indigo-100 hover:bg-indigo-200 transition"
+            className="w-full flex justify-between items-center p-4 bg-gradient-to-r from-body-20 to-primary-50/20 hover:from-body-30 transition-all duration-200"
             onClick={() => toggleWeek(week)}
+            data-prevent-scroll
           >
-            <span className="font-semibold text-indigo-700 ">Week {wIndex + 1}</span>
-            <span className="text-indigo-600">{expandedWeek === week ? "-" : "+"}</span>
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-primary-70 rounded-lg flex items-center justify-center">
+                <span className="text-white font-semibold text-sm">W{wIndex + 1}</span>
+              </div>
+              <div className="text-left">
+                <span className="font-semibold text-body-100">Week {wIndex + 1}</span>
+                <p className="text-body-50 text-sm">
+                  {interventionPlan[week]?.length || 0} sessions
+                </p>
+              </div>
+            </div>
+            <span className="text-body-50">{expandedWeek === week ? "−" : "+"}</span>
           </button>
 
           {expandedWeek === week && (
-            <div className="p-4 space-y-4">
+            <div className="p-4 space-y-4" data-prevent-scroll>
               {interventionPlan[week]?.map((session, sIndex) => (
-                <div key={sIndex} className="border rounded-md p-4 bg-gray-50 space-y-3 shadow-sm">
+                <div key={sIndex} className="border border-body-30 rounded-lg p-4 bg-body-20 space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="font-medium">Session {sIndex + 1}</span>
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 bg-ternary-70 rounded flex items-center justify-center">
+                        <span className="text-white text-xs font-semibold">{sIndex + 1}</span>
+                      </div>
+                      <span className="font-medium text-body-100">Session {sIndex + 1}</span>
+                    </div>
                     {interventionPlan[week].length > 1 && (
                       <button
                         type="button"
                         onClick={() => handleRemoveSession(week, sIndex)}
-                        className="text-red-500 text-sm hover:underline"
+                        className="text-error hover:bg-error/10 p-1 rounded transition-colors"
                       >
-                        Remove
+                        <Minus className="w-4 h-4" />
                       </button>
                     )}
                   </div>
- <div>
-                      <label className="text-sm font-medium">Date <span className="text-red-500">*</span></label>
-                      <DatePicker
-                        value={session.date || ""}
-                        name={`date_${week}_${sIndex}`} // Unique name for each DatePicker
-                        callback={(e, val) => handleWeekChange(week, sIndex, "date", val)}
-                        divClasses="h-12"
-                        inputClasses={inputClass}
-                        disableFuture={true}
-                        icon={true}
-                      />
-                      {errors[`${week}_s${sIndex}_date`] && (
-                        <p className="text-red-500 text-sm mt-1">{errors[`${week}_s${sIndex}_date`]}</p>
-                      )}
-                    </div>
 
-                  {/* Goals Section */}
-                  <div>
-                    <label className="text-sm font-medium">Goals (1-2 required)</label>
+                  {/* Date */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-body-70 flex items-center gap-2">
+                      <Calendar className="w-4 h-4" />
+                      Date <span className="text-error">*</span>
+                    </label>
+                    <DatePicker
+                      value={session.date || ""}
+                      name={`date_${week}_${sIndex}`}
+                      callback={(e, val) => handleWeekChange(week, sIndex, "date", val)}
+                      divClasses="h-12"
+                      inputClasses={inputClass}
+                      disableFuture={true}
+                      icon={false}
+                    />
+                    {errors[`${week}_s${sIndex}_date`] && (
+                      <p className="text-error text-sm mt-1">{errors[`${week}_s${sIndex}_date`]}</p>
+                    )}
+                  </div>
+
+                  {/* Goals */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-body-70 flex items-center gap-2">
+                      <Target className="w-4 h-4" />
+                      Goals (1-2 required)
+                    </label>
                     {session.goal?.map((g, gIndex) => (
-                      <div key={gIndex} className="flex gap-2 items-center mt-1">
+                      <div key={gIndex} className="flex gap-2 items-center">
                         <input
                           type="text"
                           value={g}
@@ -238,32 +295,36 @@ const FormD = () => {
                           <button
                             type="button"
                             onClick={() => handleRemoveGoal(week, sIndex, gIndex)}
-                            className="text-red-500 text-sm hover:bg-red-100 w-8 h-8 rounded-full flex items-center justify-center"
+                            className="text-error hover:bg-error/10 p-2 rounded transition-colors flex-shrink-0"
                           >
-                            -
+                            <Minus className="w-4 h-4" />
                           </button>
                         )}
                       </div>
                     ))}
                     {errors[`${week}_s${sIndex}_goals`] && (
-                      <p className="text-red-500 text-sm mt-1">{errors[`${week}_s${sIndex}_goals`]}</p>
+                      <p className="text-error text-sm mt-1">{errors[`${week}_s${sIndex}_goals`]}</p>
                     )}
-                    {session.goal.length < 2 && (
+                    {session.goal?.length < 2 && (
                       <button
                         type="button"
                         onClick={() => handleAddGoal(week, sIndex)}
-                        className="text-indigo-600 text-sm mt-1 hover:underline flex items-center gap-1"
+                        className="text-primary-100 hover:bg-primary-50/20 p-2 rounded transition-colors flex items-center gap-2 text-sm"
                       >
-                        <span>+</span> Add Goal
+                        <Plus className="w-4 h-4" />
+                        Add Goal
                       </button>
                     )}
                   </div>
 
-                  {/* Activities Section */}
-                  <div>
-                    <label className="text-sm font-medium">Activities (1-2 required)</label>
+                  {/* Activities */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-body-70 flex items-center gap-2">
+                      <Activity className="w-4 h-4" />
+                      Activities (1-2 required)
+                    </label>
                     {session.activity?.map((a, aIndex) => (
-                      <div key={aIndex} className="flex gap-2 items-center mt-1">
+                      <div key={aIndex} className="flex gap-2 items-center">
                         <input
                           type="text"
                           value={a}
@@ -275,59 +336,44 @@ const FormD = () => {
                           <button
                             type="button"
                             onClick={() => handleRemoveActivity(week, sIndex, aIndex)}
-                            className="text-red-500 text-sm hover:bg-red-100 w-8 h-8 rounded-full flex items-center justify-center"
+                            className="text-error hover:bg-error/10 p-2 rounded transition-colors flex-shrink-0"
                           >
-                            -
+                            <Minus className="w-4 h-4" />
                           </button>
                         )}
                       </div>
                     ))}
                     {errors[`${week}_s${sIndex}_activities`] && (
-                      <p className="text-red-500 text-sm mt-1">{errors[`${week}_s${sIndex}_activities`]}</p>
+                      <p className="text-error text-sm mt-1">{errors[`${week}_s${sIndex}_activities`]}</p>
                     )}
-                    {session.activity.length < 2 && (
+                    {session.activity?.length < 2 && (
                       <button
                         type="button"
                         onClick={() => handleAddActivity(week, sIndex)}
-                        className="text-indigo-600 text-sm mt-1 hover:underline flex items-center gap-1"
+                        className="text-primary-100 hover:bg-primary-50/20 p-2 rounded transition-colors flex items-center gap-2 text-sm"
                       >
-                        <span>+</span> Add Activity
+                        <Plus className="w-4 h-4" />
+                        Add Activity
                       </button>
                     )}
                   </div>
 
-                  {/* Child Response and Date */}
-                  <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
-                    <div>
-                      <label className="text-sm font-medium">Child Response</label>
-                      <input
-                        type="text"
-                        value={session.childResponse || ""}
-                        onChange={(e) => handleWeekChange(week, sIndex, "childResponse", e.target.value)}
-                        className={inputClass}
-                        placeholder="How did the child respond?"
-                      />
-                      {errors[`${week}_s${sIndex}_childResponse`] && (
-                        <p className="text-red-500 text-sm mt-1">{errors[`${week}_s${sIndex}_childResponse`]}</p>
-                      )}
-                    </div>
-
-                    {/* 
-                     <div>
-                      <label className="text-sm font-medium">Date</label>
-                      <input
-                        type="date"
-                        value={session.date || ""}
-                        onChange={(e) => handleWeekChange(week, sIndex, "date", e.target.value)}
-                        className={inputClass}
-                        onFocus={(e) => e.target.showPicker?.()}
-                      />
-                      {errors[`${week}_s${sIndex}_date`] && (
-                        <p className="text-red-500 text-sm mt-1">{errors[`${week}_s${sIndex}_date`]}</p>
-                      )}
-                    </div> */}
-
-                   
+                  {/* Child Response */}
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-body-70 flex items-center gap-2">
+                      <MessageSquare className="w-4 h-4" />
+                      Child Response <span className="text-error">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={session.childResponse || ""}
+                      onChange={(e) => handleWeekChange(week, sIndex, "childResponse", e.target.value)}
+                      className={inputClass}
+                      placeholder="How did the child respond?"
+                    />
+                    {errors[`${week}_s${sIndex}_childResponse`] && (
+                      <p className="text-error text-sm mt-1">{errors[`${week}_s${sIndex}_childResponse`]}</p>
+                    )}
                   </div>
                 </div>
               ))}
@@ -336,65 +382,81 @@ const FormD = () => {
                 <button
                   type="button"
                   onClick={() => handleAddSession(week)}
-                  className="text-indigo-600 text-sm mt-2 hover:underline flex items-center gap-1"
+                  className="text-primary-100 hover:bg-primary-50/20 p-3 rounded-lg transition-colors flex items-center gap-2 justify-center w-full border-2 border-dashed border-body-30"
                 >
-                  <span>+</span> Add Session
+                  <Plus className="w-5 h-5" />
+                  Add Session
                 </button>
               )}
             </div>
           )}
 
           {errors[week] && (
-            <p className="text-red-500 text-sm mt-1 ml-4 p-2 bg-red-50 rounded">{errors[week]}</p>
+            <div className="p-3 bg-error/10 border border-error rounded-lg mx-4 mb-4">
+              <p className="text-error text-sm">{errors[week]}</p>
+            </div>
           )}
         </div>
       ))}
 
       {/* Tools Section */}
-      <div className="bg-white shadow-lg rounded-md p-4 mt-6">
-        <label className="text-sm font-medium">
-          Mention Tool Used For Respective Goal <span className="text-red-500">*</span>
-        </label>
+      <div className="bg-white border border-body-30 rounded-xl p-4 md:p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-8 h-8 bg-ternary-70 rounded-lg flex items-center justify-center">
+            <Wrench className="w-4 h-4 text-white" />
+          </div>
+          <label className="text-sm font-medium text-body-100">
+            Mention Tool Used For Respective Goal <span className="text-error">*</span>
+          </label>
+        </div>
         <input
           type="text"
           value={interventionPlan.mentionToolUsedForRespectiveGoal || ""}
           onChange={handleToolChange}
-          className={inputClass + " mt-2"}
+          className={inputClass}
           placeholder="Describe the tools used for each goal"
         />
         {errors.mentionToolUsedForRespectiveGoal && (
-          <p className="text-red-500 text-sm mt-1">{errors.mentionToolUsedForRespectiveGoal}</p>
+          <p className="text-error text-sm mt-2">{errors.mentionToolUsedForRespectiveGoal}</p>
         )}
       </div>
 
-      {/* Navigation Buttons */}
-      <div className="flex justify-between mt-6">
+      {/* Navigation */}
+      <div className="flex flex-col sm:flex-row justify-between gap-3 pt-6 border-t border-body-30">
         <button
           onClick={handlePrevious}
           disabled={activeStep === 0}
-          className="px-4 py-2 bg-gray-300 text-gray-800 rounded disabled:opacity-50 "
+          className="px-6 py-3 bg-body-30 text-body-70 rounded-lg font-semibold hover:bg-body-50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed order-2 sm:order-1"
         >
           Previous
         </button>
-
         <button
           onClick={handleNextOrSubmit}
-          className="px-3 py-2 bg-indigo-600 text-white rounded "
+          className="px-6 py-3 bg-gradient-to-r from-primary-70 to-primary-100 text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-200 order-1 sm:order-2"
         >
           Submit Assignment
         </button>
       </div>
 
-      {/* Status Message */}
       {submitStatus && (
-        <p className="mt-4 text-center text-green-600 font-medium">
-          {submitStatus}
-        </p>
+        <div className={`p-3 rounded-lg text-center ${
+          submitStatus === "Submitting..." ? "bg-primary-50/20 border border-primary-50" :
+          submitStatus.includes("failed") ? "bg-error/20 border border-error" :
+          "bg-success/20 border border-success"
+        }`}>
+          <p className={`
+            text-sm font-medium ${
+              submitStatus === "Submitting..." ? "text-primary-100" :
+              submitStatus.includes("failed") ? "text-error" :
+              "text-success"
+            }
+          `}>
+            {submitStatus}
+          </p>
+        </div>
       )}
     </div>
   );
 };
 
 export default FormD;
-
-
