@@ -10,9 +10,9 @@ const App = () => {
     <div>
       <Toaster
         toastOptions={{
-          success: {
-            duration: 5000,
-          },
+          success:{
+            duration:10
+          }
         }}
       />
 

@@ -2,7 +2,7 @@
 import axios from "axios";
 
 export const axiosClient = axios.create({
-  baseURL: "http://localhost:3001/",
+  baseURL: "https://osit-assignment-bd.onrender.com",
 });
 
 // Remove the module-level user declaration
