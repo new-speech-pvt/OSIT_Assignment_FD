@@ -225,10 +225,9 @@ const OsitAssignmentProvider = ({ children }) => {
             console.log("API Response:", response);
 
             // Reset forms and show success
-            // resetAllForms();
-            // setSubmitStatus("Form submitted successfully");
-            // setIsFormSubmitted(true);
-
+            resetAllForms();
+            setSubmitStatus("Form submitted successfully");
+            window.location.reload();
         } catch (error) {
             console.log("API Error:", error.response?.data || error);
             setSubmitStatus("Submission failed. Please try again.");

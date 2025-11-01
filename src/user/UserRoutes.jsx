@@ -1,5 +1,5 @@
 import ProtectedRoute from "../ProtectedRoute";
-import { Route, Routes, useNavigate, useLocation } from "react-router";
+import { Route, Routes, useNavigate } from "react-router";
 import HomePage from "../user/pages/HomePage";
 import OSITAssignmentPreview from "../components/shared/OSITAssignmentPreview";
 import { useAuthStore } from "../store/authStore";
@@ -53,7 +53,7 @@ const UserRoutes = () => {
                     <User className="w-4 h-4 text-white" />
                   </div>
                   <span className="text-sm font-medium hidden sm:block">
-                    {user?.fName || "Participant"}
+                    {user?.profile?.fName || "Participant"}
                   </span>
                 </div>
                 
