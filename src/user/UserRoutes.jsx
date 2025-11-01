@@ -1,5 +1,5 @@
 import ProtectedRoute from "../ProtectedRoute";
-import { Route, Routes, useNavigate } from "react-router";
+import { Route, Routes } from "react-router";
 import HomePage from "../user/pages/HomePage";
 import OSITAssignmentPreview from "../components/shared/OSITAssignmentPreview";
 import { useAuthStore } from "../store/authStore";
@@ -10,12 +10,11 @@ import { LogOut, User } from "lucide-react";
 
 const UserRoutes = () => {
   const { logout, user } = useAuthStore();
-  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     saveUserToLocal(null);
-    navigate("/");
+    window.location.replace("/");
   };
 
   const { token } = getUserFromLocal();
