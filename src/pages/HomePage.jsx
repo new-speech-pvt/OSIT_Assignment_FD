@@ -1,144 +1,3 @@
-
-// import { useEffect, useState } from "react";
-// import { useAuthStore } from "../store/authStore";
-// import { saveUserToLocal } from "../Utils/auth";
-// import { useNavigate } from "react-router";
-// import { axiosClient } from "../Utils/axiosClient";
-// import OsitAssignmentProvider from "../assignment/pages/OsitAssignmentProvider";
-
-// const HomePage = () => {
-//     const { logout, user } = useAuthStore();
-//     const navigate = useNavigate();
-
-//     const [assignments, setAssignments] = useState([]);
-
-//     const [loading, setLoading] = useState(true);
-
-//     const [showForm, setShowForm] = useState(false); // 👈 ye decide karega kya dikhana hai
-
-//     useEffect(() => {
-
-//         const fetchData = async () => {
-
-//             try {
-
-
-//                 const response = await axiosClient.get(
-//                     `/osit-assignments/participant/${user?.email}`);
-
-//                 const success = response?.data?.success;
-
-//                 const list = response?.data?.data?.assignments || [];
-
-//                 if (success && list.length > 0) {
-
-//                     setAssignments(list);
-
-//                     setShowForm(false); // ✅ data aaya → form mat dikhao
-
-//                 } else {
-
-//                     setShowForm(true); // ❌ data empty → form dikhao
-
-//                 }
-
-//             } catch (err) {
-
-//                 console.error("Error fetching data:", err);
-
-//                 setShowForm(true); // ❌ error → form dikhao
-
-//             } finally {
-
-//                 setLoading(false);
-
-//             }
-
-//         };
-
-//         fetchData();
-
-//     }, []);
-
-//     const handleLogout = () => {
-//         // Zustand se user hata do
-//         logout();
-
-//         // LocalStorage se bhi user data clear karo
-//         saveUserToLocal(null);
-
-//         // Login page par redirect
-//         navigate("/");
-//     };
-
-//     if (loading) return <div>Loading...</div>;
-
-//     return (
-//         <div className="p-6">
-
-//             {showForm ? (
-
-//                 // agar data empty hai to form component dikhao
-//                 <OsitAssignmentProvider />
-//             ) : (
-
-//                 // agar data mila hai to cards dikhana
-//                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-//                     {assignments.map((item) => (
-//                         <div
-
-//                             key={item._id}
-
-//                             className="p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition"
-//                         >
-//                             <h2 className="text-lg font-semibold mb-1">
-
-//                                 {item.participantInfo?.fName} {item.participantInfo?.lName}
-//                             </h2>
-//                             <p className="text-gray-600 text-sm">
-
-//                                 Email: {item.participantInfo?.email}
-//                             </p>
-//                             <p className="text-gray-600 text-sm">
-
-//                                 Enrollment: {item.participantInfo?.enrollmentId}
-//                             </p>
-
-//                             {item.scoring ? (
-//                                 <p className="text-green-600 font-semibold mt-2">
-
-//                                     Scored: {item.scoring.totalObtained}/{item.scoring.totalPossible}
-//                                 </p>
-
-//                             ) : (
-//                                 <p className="text-yellow-600 font-semibold mt-2">
-
-//                                     Not Scored Yet
-//                                 </p>
-
-//                             )}
-//                         </div>
-
-//                     ))}
-//                 </div>
-
-//             )}
-//             <button
-//                 onClick={handleLogout}
-//                 className="bg-[#E16F9F] text-white font-medium px-4 py-2 rounded-lg hover:bg-[#D73F7F] transition-all"
-//             >
-//                 Logout
-//             </button>
-//         </div>
-
-//     );
-
-// };
-
-// export default HomePage;
-
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -146,6 +5,7 @@ import OsitAssignmentProvider from "../assignment/pages/OsitAssignmentProvider";
 import AssignmentForm2 from "../assignment/pages/AssignmentForm2";
 import { axiosClient } from "../Utils/axiosClient";
 import { useAuthStore } from "../store/authStore";
+import { Loader2 } from "lucide-react";
 
 // Dummy imports — replace these with your actual components
 
@@ -176,20 +36,34 @@ const Button = ({ children, onClick, variant = "primary" }) => {
 const AssignmentList = () => {
     const {user} = useAuthStore()
     const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
 
     // --- Fetch Assignments from API ---
     useEffect(() => {
         const fetchAssignments = async () => {
+            setLoading(true)
             try {
-                const res = await axiosClient.get(`/osit-assignments/participant/${user?.email}`); // ✅ replace with your real API
+                const res = await axiosClient.get(`/osit-assignments/participant/${user?.email}`, {
+                    headers:{
+                        Authorization: `Bearer ${user?.token}`
+                    }
+                }); // ✅ replace with your real API
                 setData(res.data?.data || null);
             } catch (err) {
                 console.error("Error fetching assignments:", err);
+            }finally{
+                setLoading(false)
             }
         };
         fetchAssignments();
     }, []);
+
+    if(loading) {return (
+        <div className="flex items-center justify-center h-64">
+        <Loader2 className="animate-spin text-[#604C91] w-8 h-8" />
+      </div>
+    )}
 
     // --- Show fallback form if no data or no assignments ---
     if (!data || !data.assignments || data.assignments.length === 0) {

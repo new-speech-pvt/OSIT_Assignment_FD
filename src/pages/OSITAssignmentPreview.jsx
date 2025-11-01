@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { Loader2, XCircle } from "lucide-react";
@@ -6,7 +6,7 @@ import { useParams } from "react-router";
 import { axiosClient } from "../Utils/axiosClient";
 import OSITScoringForm from "../components/Scoring/OsitScoring";
 
-const OSITAssignmentPreview = () => {
+const OSITAssignmentPreview = ({ role = "THERAPIST" }) => {
   const { ositAssigmnentId } = useParams();
   console.log(ositAssigmnentId);
   const [data, setData] = useState(null);
@@ -19,23 +19,23 @@ const OSITAssignmentPreview = () => {
 
   // ✅ Fetch API data
 
+  const fetchAssignment = useCallback(async () => {
+    try {
+      const res = await axiosClient.get(
+        `/osit-assignments/${ositAssigmnentId}`
+      );
+
+      setData(res.data?.data);
+    } catch (err) {
+      console.error(err);
+
+      setError("Failed to load assignment data.");
+    } finally {
+      setLoading(false);
+    }
+  }, [ositAssigmnentId]);
+
   useEffect(() => {
-    const fetchAssignment = async () => {
-      try {
-        const res = await axiosClient.get(
-          `/osit-assignments/${ositAssigmnentId}`
-        );
-
-        setData(res.data?.data);
-      } catch (err) {
-        console.error(err);
-
-        setError("Failed to load assignment data.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchAssignment();
   }, [ositAssigmnentId]);
 
@@ -78,17 +78,19 @@ const OSITAssignmentPreview = () => {
 
       {/* Therapist + Participant Info */}
       <div className="grid md:grid-cols-2 gap-6 mb-8">
-        <div className="p-5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
-          <h2 className="text-lg font-semibold mb-3 text-[#604C91]">
-            Therapist Details
-          </h2>
-          <p>
-            <strong>Name:</strong> {data?.scoring?.therapist?.name}
-          </p>
-          <p>
-            <strong>Email:</strong> {scoring?.therapist?.email}
-          </p>
-        </div>
+        {scoring && role === "THERAPIST" && (
+          <div className="p-5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+            <h2 className="text-lg font-semibold mb-3 text-[#604C91]">
+              Therapist Details
+            </h2>
+            <p>
+              <strong>Name:</strong> {data?.scoring?.therapist?.name}
+            </p>
+            <p>
+              <strong>Email:</strong> {scoring?.therapist?.email}
+            </p>
+          </div>
+        )}
         <div className="p-5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
           <h2 className="text-lg font-semibold mb-3 text-[#604C91]">
             Participant Info
@@ -264,9 +266,12 @@ const OSITAssignmentPreview = () => {
             / {scoring?.totalPossible}
           </div>
         </div>
-      ) : (
-        <OSITScoringForm ositAssigmnentId={ositAssigmnentId} />
-      )}
+      ) : role === "THERAPIST" ? (
+        <OSITScoringForm
+          ositAssigmnentId={ositAssigmnentId}
+          callback={fetchAssignment}
+        />
+      ) : null}
     </motion.div>
   );
 };

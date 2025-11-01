@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { motion } from "framer-motion";
 import { axiosClient } from "../../Utils/axiosClient";
+import toast from "react-hot-toast";
 
 // --- UI Components ---
 
@@ -28,7 +29,7 @@ const Button = ({ children, className = "", ...props }) => (
 
 // --- Main Component ---
 
-const OSITScoringForm = ({ ositAssigmnentId }) => {
+const OSITScoringForm = ({ ositAssigmnentId, callback }) => {
   const criteriaList = [
     "Understanding of Instructions",
 
@@ -56,9 +57,11 @@ const OSITScoringForm = ({ ositAssigmnentId }) => {
   };
 
   const total = scores.reduce(
-    (sum, item) => sum + (parseFloat(item.obtainedMarks) || 0), 0 );
+    (sum, item) => sum + (parseFloat(item.obtainedMarks) || 0),
+    0
+  );
 
-     // ✅ Check if all scores are filled
+  // ✅ Check if all scores are filled
   const isFormComplete = scores.every(
     (item) => item.obtainedMarks !== "" && !isNaN(item.obtainedMarks)
   );
@@ -83,14 +86,14 @@ const OSITScoringForm = ({ ositAssigmnentId }) => {
         `/osit-assignments/score`,
         payload
       );
-      console.log(response);
+      if (response.status === 200) {
+        toast.success("success");
+        callback();
+        setScores(criteriaList.map(() => ({ obtainedMarks: "", remarks: "" })));
+      }
     } catch (error) {
       console.log(error.message);
     }
-
-    console.log("Submitting scoring:", payload);
-
-    alert("Form submitted! Check console for payload.");
   };
 
   return (
@@ -146,13 +149,17 @@ const OSITScoringForm = ({ ositAssigmnentId }) => {
         <div className="mt-6 text-center">
           <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
             Total:{" "}
-            <span className="text-[#604C91] dark:text-[#6a5995]">{total}</span> /{" "}
-            50
+            <span className="text-[#604C91] dark:text-[#6a5995]">{total}</span>{" "}
+            / 50
           </p>
         </div>
 
         <div className="mt-6 flex justify-center">
-          <Button type="submit" className="w-full sm:w-auto " disabled={!isFormComplete}>
+          <Button
+            type="submit"
+            className="w-full sm:w-auto "
+            disabled={!isFormComplete}
+          >
             Submit Scoring
           </Button>
         </div>

@@ -30,6 +30,8 @@ export default function Login() {
 
   const [errors, setErrors] = useState({});
 
+
+
   const handleChange = (e) => {
     setErrors({ ...errors, [e.target.name]: "" });
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -98,10 +100,9 @@ export default function Login() {
 
       if (response.data.success) {
         const user = response.data?.data;
-        toast.success("Login success");
-        saveUserToLocal(user);
         login(user);
-        navigate("/");
+        saveUserToLocal(user);
+        toast.success("Login success");
       }
     } catch (error) {
       toast.error(error.response?.data?.message || "Invalid credentials!");

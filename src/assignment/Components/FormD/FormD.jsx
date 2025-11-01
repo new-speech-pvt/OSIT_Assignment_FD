@@ -206,6 +206,21 @@ const FormD = () => {
                       </button>
                     )}
                   </div>
+ <div>
+                      <label className="text-sm font-medium">Date <span className="text-red-500">*</span></label>
+                      <DatePicker
+                        value={session.date || ""}
+                        name={`date_${week}_${sIndex}`} // Unique name for each DatePicker
+                        callback={(e, val) => handleWeekChange(week, sIndex, "date", val)}
+                        divClasses="h-12"
+                        inputClasses={inputClass}
+                        disableFuture={true}
+                        icon={true}
+                      />
+                      {errors[`${week}_s${sIndex}_date`] && (
+                        <p className="text-red-500 text-sm mt-1">{errors[`${week}_s${sIndex}_date`]}</p>
+                      )}
+                    </div>
 
                   {/* Goals Section */}
                   <div>
@@ -312,22 +327,7 @@ const FormD = () => {
                       )}
                     </div> */}
 
-                    <div>
-                      <label className="text-sm font-medium">Date <span className="text-red-500">*</span></label>
-                      <DatePicker
-                        value={session.date || ""}
-                        name={`date_${week}_${sIndex}`} // Unique name for each DatePicker
-                        callback={(e, val) => handleWeekChange(week, sIndex, "date", val)}
-                        divClasses="h-12"
-                        inputClasses={inputClass}
-                        disableFuture={true}
-                        icon={true}
-                      />
-                      {errors[`${week}_s${sIndex}_date`] && (
-                        <p className="text-red-500 text-sm mt-1">{errors[`${week}_s${sIndex}_date`]}</p>
-                      )}
-                    </div>
-
+                   
                   </div>
                 </div>
               ))}
