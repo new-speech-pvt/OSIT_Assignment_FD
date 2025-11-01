@@ -2,7 +2,7 @@
     import { useEffect, useRef, useState } from "react";
     import ReactDOM from "react-dom";
     import moment from "moment";
-    import useClickAwayToClose from "../../../Utils/hooks/useClickAwayToClose";
+    import useClickAwayToClose from "../../Utils/hooks/useClickAwayToClose";
     
     const Calender = ({
     callback,

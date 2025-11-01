@@ -1,11 +1,9 @@
 // ----------------------------------------------------------------------------------
 import { createContext, useState, useEffect } from "react"
-import React from 'react'
-import FormB from "../Components/FormB/FormB";
-import FormC from "../Components/FormC/FormC";
-import FormD from "../Components/FormD/FormD";
 import { axiosClient } from "../../Utils/axiosClient";
-
+import FormB from '../components/FormB'
+import FormC from '../components/FormC'
+import FormD from '../components/FormD'
 const OsitAssignmentContext = createContext();
 
 const OsitAssignmentProvider = ({ children }) => {
@@ -54,7 +52,7 @@ const OsitAssignmentProvider = ({ children }) => {
     });
 
     const [interventionPlan, setInterventionPlan] = useState(defaultinterventionPlan);
-    const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+    
     const [submitStatus, setSubmitStatus] = useState(null);
 
     // Load data from localStorage on component mount
@@ -99,8 +97,6 @@ const OsitAssignmentProvider = ({ children }) => {
 
     const renderForm = () => {
         switch (steps[activeStep]) {
-            case "Form A":
-                return <FormA />;
             case "Form B":
                 return <FormB />;
             case "Form C":
@@ -258,7 +254,6 @@ const OsitAssignmentProvider = ({ children }) => {
             initialSession,
             submitStatus,
             setSubmitStatus,
-            isFormSubmitted,
             handleFormCompletion,
             resetAllForms
         }}>

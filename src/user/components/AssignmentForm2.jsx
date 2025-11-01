@@ -1,17 +1,15 @@
 import React, { useContext } from 'react'
-import { OsitAssignmentContext } from './OsitAssignmentProvider';
+import { OsitAssignmentContext } from '../contexts/OsitAssignmentContext';
 
 const AssignmentForm2 = () => {
 
 
-    const { activeStep, setActiveStep, getStepStyle, renderForm, steps, isFormSubmitted } = useContext(OsitAssignmentContext)
+    const { activeStep, setActiveStep, getStepStyle, renderForm, steps } = useContext(OsitAssignmentContext)
 
 
     // completedForm
 
-    if (isFormSubmitted) {
-  return <CompletedForm />;
-}
+
 
     return (
         <div className=" min-h-screen bg-gradient-to-br from-blue-100 via-white to-teal-100 flex justify-center items-start md:p-2">
@@ -77,23 +75,4 @@ export default AssignmentForm2;
 
 
 
-const CompletedForm = () => (
-  <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-green-50 via-white to-teal-100">
-    <div className="bg-white shadow-2xl p-10 rounded-3xl text-center">
-    
-      <div className="text-7xl mb-4 text-green-500">✅</div>
-      <h2 className="text-3xl font-bold text-green-600 mb-3">
-        Assignment Completed!
-      </h2>
-      <p className="text-gray-700 text-lg">
-        You've successfully submitted all OSIT forms. Great job!
-      </p>
-      <button
-        onClick={() => window.location.reload()}
-        className="mt-6 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
-      >
-        Start New Assignment
-      </button>
-    </div>
-  </div>
-);
+
