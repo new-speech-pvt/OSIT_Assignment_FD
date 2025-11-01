@@ -41,7 +41,7 @@ const UserRoutes = () => {
                 <img
                   src="https://gmsassets.z29.web.core.windows.net/public/logo1.png"
                   alt="Speechgears Research Institute"
-                  className="h-8 md:h-10 w-auto"
+                  className="h-6 md:h-10 w-auto"
                 />
               </div>
 
