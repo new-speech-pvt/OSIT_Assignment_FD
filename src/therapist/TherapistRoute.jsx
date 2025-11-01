@@ -1,5 +1,5 @@
 import Footer from "../components/Footer";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Assignments from "../therapist/pages/Assignments";
 import OSITAssignmentPreview from "../components/shared/OSITAssignmentPreview";
 import { useAuthStore } from "../store/authStore";
@@ -8,12 +8,11 @@ import { LogOut, User } from "lucide-react";
 
 const TherapistRoute = () => {
   const { logout, user } = useAuthStore();
-  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     saveUserToLocal(null);
-    navigate("/");
+   window.location.replace("/");
   };
 
   return (

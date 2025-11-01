@@ -1,5 +1,5 @@
 import ProtectedRoute from "../ProtectedRoute";
-import { Route, Routes, useNavigate } from "react-router";
+import { Route, Routes } from "react-router";
 import HomePage from "../user/pages/HomePage";
 import OSITAssignmentPreview from "../components/shared/OSITAssignmentPreview";
 import { useAuthStore } from "../store/authStore";
@@ -10,12 +10,11 @@ import { LogOut, User } from "lucide-react";
 
 const UserRoutes = () => {
   const { logout, user } = useAuthStore();
-  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     saveUserToLocal(null);
-    navigate("/");
+    window.location.replace("/");
   };
 
   const { token } = getUserFromLocal();
@@ -41,7 +40,7 @@ const UserRoutes = () => {
                 <img
                   src="https://gmsassets.z29.web.core.windows.net/public/logo1.png"
                   alt="Speechgears Research Institute"
-                  className="h-8 md:h-10 w-auto"
+                  className="h-6 md:h-10 w-auto"
                 />
               </div>
 
