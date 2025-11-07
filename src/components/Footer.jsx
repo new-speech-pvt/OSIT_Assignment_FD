@@ -10,14 +10,17 @@ const Footer = () => {
           {/* Company Info */}
           <div className="md:col-span-2">
             <img
-              src="https://gmsassets.z29.web.core.windows.net/public/logo1.png"
+              // src={"./image.png"}
+              src={"./logo.png"}
               alt="Speechgears Research Institute"
-              className="h-8 mb-4 w-auto"
+              className="h-9 mb-4 w-auto"
             />
+
             <p className="text-white/80 text-sm mb-4 max-w-md">
-              Professional oral sensorimotor integration therapy management platform 
-              dedicated to helping therapists and participants achieve better outcomes 
-              through innovative technology and compassionate care.
+              Professional oral sensorimotor integration therapy management
+              platform dedicated to helping therapists and participants achieve
+              better outcomes through innovative technology and compassionate
+              care.
             </p>
             <div className="flex items-center gap-2 text-white/60 text-sm">
               <Heart className="w-4 h-4" />
@@ -39,7 +42,11 @@ const Footer = () => {
               </div>
               <div className="flex items-start gap-3 text-white/80 text-sm">
                 <MapPin className="w-4 h-4 text-primary-50 mt-0.5" />
-                <span>SpeechGears India Pvt. Ltd.<br />India</span>
+                <span>
+                  SpeechGears India Pvt. Ltd.
+                  <br />
+                  India
+                </span>
               </div>
             </div>
           </div>
@@ -48,16 +55,28 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
             <div className="space-y-2 text-sm">
-              <a href="#" className="block text-white/80 hover:text-white transition-colors">
+              <a
+                href="#"
+                className="block text-white/80 hover:text-white transition-colors"
+              >
                 About Us
               </a>
-              <a href="#" className="block text-white/80 hover:text-white transition-colors">
+              <a
+                href="#"
+                className="block text-white/80 hover:text-white transition-colors"
+              >
                 Services
               </a>
-              <a href="#" className="block text-white/80 hover:text-white transition-colors">
+              <a
+                href="#"
+                className="block text-white/80 hover:text-white transition-colors"
+              >
                 Therapists
               </a>
-              <a href="#" className="block text-white/80 hover:text-white transition-colors">
+              <a
+                href="#"
+                className="block text-white/80 hover:text-white transition-colors"
+              >
                 Contact
               </a>
             </div>
@@ -73,9 +92,15 @@ const Footer = () => {
               © 2025 All rights reserved by SpeechGears India Pvt. Ltd.
             </p>
             <div className="flex items-center gap-6 text-sm text-white/60">
-              <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-white transition-colors">Cookie Policy</a>
+              <a href="#" className="hover:text-white transition-colors">
+                Privacy Policy
+              </a>
+              <a href="#" className="hover:text-white transition-colors">
+                Terms of Service
+              </a>
+              <a href="#" className="hover:text-white transition-colors">
+                Cookie Policy
+              </a>
             </div>
           </div>
         </div>

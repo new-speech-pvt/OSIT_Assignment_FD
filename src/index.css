@@ -117,3 +117,7 @@
     --color-white:    #ffffff;
   }
 }
+
+input[type="number"]::-webkit-inner-spin-button {
+    display: none;
+}

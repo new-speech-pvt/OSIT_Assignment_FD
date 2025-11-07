@@ -1,5 +1,19 @@
 import { useState } from "react";
-import { Eye, EyeOff, LogIn, UserPlus, Key, User, Mail, Phone, MapPin, Calendar, Stethoscope, Briefcase, IdCard } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  LogIn,
+  UserPlus,
+  Key,
+  User,
+  Mail,
+  Phone,
+  MapPin,
+  Calendar,
+  Stethoscope,
+  Briefcase,
+  IdCard,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import { getUserFromLocal, saveUserToLocal } from "../Utils/auth";
@@ -121,8 +135,17 @@ export default function Login() {
 
   const resetForm = () => {
     setFormData({
-      fName: "", lName: "", gender: "", dob: "", phone: "", email: "", password: "",
-      state: "", city: "", therapistType: "", enrollmentId: "",
+      fName: "",
+      lName: "",
+      gender: "",
+      dob: "",
+      phone: "",
+      email: "",
+      password: "",
+      state: "",
+      city: "",
+      therapistType: "",
+      enrollmentId: "",
     });
     setErrors({});
   };
@@ -145,15 +168,23 @@ export default function Login() {
     resetForm();
   };
 
-  const inputClass = "w-full px-4 py-3 border border-body-30 rounded-xl text-body-100 focus:outline-none focus:ring-2 focus:ring-primary-50 focus:border-primary-50 transition-all duration-200 bg-white placeholder-body-50";
+  const inputClass =
+    "w-full px-4 py-3 border border-body-30 rounded-xl text-body-100 focus:outline-none focus:ring-2 focus:ring-primary-50 focus:border-primary-50 transition-all duration-200 bg-white placeholder-body-50";
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-body-20 to-primary-50/20 flex items-center justify-center p-4">
       <div className="w-full max-w-6xl bg-white rounded-2xl shadow-2xl border border-body-30 overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[80vh]">
           {/* Left Side - Branding */}
-          <div className="bg-gradient-to-br from-secondary-70 to-ternary-100 text-white p-8 lg:p-12 hidden lg:flex flex-col justify-center">
+          <div
+            className="relative hidden lg:flex flex-col justify-center text-white p-8 lg:p-12 bg-center bg-no-repeat bg-cover"
+            style={{
+              backgroundImage: `url('/osit-img.png')`,
+            }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-secondary-70/80 to-ternary-100/80" />
             <motion.div
+              className="relative z-10"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
@@ -161,9 +192,10 @@ export default function Login() {
               <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mb-6 backdrop-blur-sm">
                 <Stethoscope className="w-10 h-10" />
               </div>
-              <h1 className="text-3xl font-bold mb-4">OSIT Therapy Platform</h1>
+              <h1 className="text-3xl font-bold mb-4">OSIT Assignment</h1>
               <p className="text-white/80 text-lg mb-6">
-                Professional oral sensorimotor integration therapy management system for therapists and participants.
+                Professional oral sensorimotor integration therapy management
+                system for therapists and participants.
               </p>
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
@@ -177,12 +209,6 @@ export default function Login() {
                     <Calendar className="w-4 h-4" />
                   </div>
                   <span>Progress tracking & assessment</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-                    <MapPin className="w-4 h-4" />
-                  </div>
-                  <span>Multi-therapist support</span>
                 </div>
               </div>
             </motion.div>
@@ -198,17 +224,27 @@ export default function Login() {
               {/* Header */}
               <div className="text-center mb-8">
                 <div className="w-16 h-16 bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl flex items-center justify-center mx-auto mb-4 lg:hidden">
-                  {isReset ? <Key className="w-8 h-8 text-white" /> : 
-                   isLogin ? <LogIn className="w-8 h-8 text-white" /> : 
-                   <UserPlus className="w-8 h-8 text-white" />}
+                  {isReset ? (
+                    <Key className="w-8 h-8 text-white" />
+                  ) : isLogin ? (
+                    <LogIn className="w-8 h-8 text-white" />
+                  ) : (
+                    <UserPlus className="w-8 h-8 text-white" />
+                  )}
                 </div>
                 <h2 className="h1 text-body-100 font-bold mb-2">
-                  {isReset ? "Reset Password" : isLogin ? "Welcome Back" : "Create Account"}
+                  {isReset
+                    ? "Reset Password"
+                    : isLogin
+                    ? "Welcome Back"
+                    : "Create Account"}
                 </h2>
                 <p className="text-body-70">
-                  {isReset ? "Enter your email to reset password" : 
-                   isLogin ? "Sign in to your account" : 
-                   "Join our therapy platform today"}
+                  {isReset
+                    ? "Enter your email to reset password"
+                    : isLogin
+                    ? "Sign in to your account"
+                    : "Join our therapy platform today"}
                 </p>
               </div>
 
@@ -232,7 +268,9 @@ export default function Login() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {/* First Name */}
                           <div className="space-y-2">
-                            <label className="block text-sm font-medium text-body-70">First Name <span className="text-error">*</span></label>
+                            <label className="block text-sm font-medium text-body-70">
+                              First Name <span className="text-error">*</span>
+                            </label>
                             <div className="relative">
                               <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-body-50 w-4 h-4" />
                               <input
@@ -244,12 +282,18 @@ export default function Login() {
                                 className={`${inputClass} pl-10`}
                               />
                             </div>
-                            {errors.fName && <p className="text-error text-sm">{errors.fName}</p>}
+                            {errors.fName && (
+                              <p className="text-error text-sm">
+                                {errors.fName}
+                              </p>
+                            )}
                           </div>
 
                           {/* Last Name */}
                           <div className="space-y-2">
-                            <label className="block text-sm font-medium text-body-70">Last Name <span className="text-error">*</span></label>
+                            <label className="block text-sm font-medium text-body-70">
+                              Last Name <span className="text-error">*</span>
+                            </label>
                             <input
                               type="text"
                               name="lName"
@@ -262,7 +306,9 @@ export default function Login() {
 
                           {/* Gender */}
                           <div className="space-y-2">
-                            <label className="block text-sm font-medium text-body-70">Gender <span className="text-error">*</span></label>
+                            <label className="block text-sm font-medium text-body-70">
+                              Gender <span className="text-error">*</span>
+                            </label>
                             <select
                               name="gender"
                               value={formData.gender}
@@ -278,7 +324,10 @@ export default function Login() {
 
                           {/* DOB */}
                           <div className="space-y-2">
-                            <label className="block text-sm font-medium text-body-70">Date of Birth <span className="text-error">*</span></label>
+                            <label className="block text-sm font-medium text-body-70">
+                              Date of Birth{" "}
+                              <span className="text-error">*</span>
+                            </label>
                             <div className="relative">
                               <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-body-50 w-4 h-4" />
                               <input
@@ -302,7 +351,9 @@ export default function Login() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {/* Phone */}
                           <div className="space-y-2">
-                            <label className="block text-sm font-medium text-body-70">Phone <span className="text-error">*</span></label>
+                            <label className="block text-sm font-medium text-body-70">
+                              Phone <span className="text-error">*</span>
+                            </label>
                             <div className="relative">
                               <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-body-50 w-4 h-4" />
                               <input
@@ -318,7 +369,9 @@ export default function Login() {
 
                           {/* Email */}
                           <div className="space-y-2 md:col-span-2">
-                            <label className="block text-sm font-medium text-body-70">Email <span className="text-error">*</span></label>
+                            <label className="block text-sm font-medium text-body-70">
+                              Email <span className="text-error">*</span>
+                            </label>
                             <div className="relative">
                               <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-body-50 w-4 h-4" />
                               <input
@@ -330,7 +383,11 @@ export default function Login() {
                                 className={`${inputClass} pl-10`}
                               />
                             </div>
-                            {errors.email && <p className="text-error text-sm">{errors.email}</p>}
+                            {errors.email && (
+                              <p className="text-error text-sm">
+                                {errors.email}
+                              </p>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -344,7 +401,9 @@ export default function Login() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {/* State */}
                           <div className="space-y-2">
-                            <label className="block text-sm font-medium text-body-70">State <span className="text-error">*</span></label>
+                            <label className="block text-sm font-medium text-body-70">
+                              State <span className="text-error">*</span>
+                            </label>
                             <div className="relative">
                               <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-body-50 w-4 h-4" />
                               <input
@@ -360,7 +419,9 @@ export default function Login() {
 
                           {/* City */}
                           <div className="space-y-2">
-                            <label className="block text-sm font-medium text-body-70">City <span className="text-error">*</span></label>
+                            <label className="block text-sm font-medium text-body-70">
+                              City <span className="text-error">*</span>
+                            </label>
                             <input
                               type="text"
                               name="city"
@@ -382,7 +443,10 @@ export default function Login() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           {/* Therapist Type */}
                           <div className="space-y-2">
-                            <label className="block text-sm font-medium text-body-70">Therapist Type <span className="text-error">*</span></label>
+                            <label className="block text-sm font-medium text-body-70">
+                              Therapist Type{" "}
+                              <span className="text-error">*</span>
+                            </label>
                             <select
                               name="therapistType"
                               value={formData.therapistType}
@@ -390,18 +454,30 @@ export default function Login() {
                               className={inputClass}
                             >
                               <option value="">Select Therapist Type</option>
-                              <option value="Speech Therapist">Speech Therapist</option>
-                              <option value="Physical Therapist">Physical Therapist</option>
-                              <option value="Occupational Therapist">Occupational Therapist</option>
-                              <option value="Special Educator">Special Educator</option>
+                              <option value="Speech Therapist">
+                                Speech Therapist
+                              </option>
+                              <option value="Physical Therapist">
+                                Physical Therapist
+                              </option>
+                              <option value="Occupational Therapist">
+                                Occupational Therapist
+                              </option>
+                              <option value="Special Educator">
+                                Special Educator
+                              </option>
                               <option value="Psychologist">Psychologist</option>
-                              <option value="Physiotherapist">Physiotherapist</option>
+                              <option value="Physiotherapist">
+                                Physiotherapist
+                              </option>
                             </select>
                           </div>
 
                           {/* Enrollment ID */}
                           <div className="space-y-2">
-                            <label className="block text-sm font-medium text-body-70">Enrollment ID</label>
+                            <label className="block text-sm font-medium text-body-70">
+                              Enrollment ID
+                            </label>
                             <div className="relative">
                               <IdCard className="absolute left-3 top-1/2 transform -translate-y-1/2 text-body-50 w-4 h-4" />
                               <input
@@ -424,7 +500,9 @@ export default function Login() {
                           Security
                         </h3>
                         <div className="space-y-2">
-                          <label className="block text-sm font-medium text-body-70">Password <span className="text-error">*</span></label>
+                          <label className="block text-sm font-medium text-body-70">
+                            Password <span className="text-error">*</span>
+                          </label>
                           <div className="relative">
                             <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 text-body-50 w-4 h-4" />
                             <input
@@ -440,10 +518,18 @@ export default function Login() {
                               onClick={() => setShowPassword(!showPassword)}
                               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-body-50 hover:text-body-70 transition-colors"
                             >
-                              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                              {showPassword ? (
+                                <EyeOff className="w-4 h-4" />
+                              ) : (
+                                <Eye className="w-4 h-4" />
+                              )}
                             </button>
                           </div>
-                          {errors.password && <p className="text-error text-sm">{errors.password}</p>}
+                          {errors.password && (
+                            <p className="text-error text-sm">
+                              {errors.password}
+                            </p>
+                          )}
                         </div>
                       </div>
                     </motion.div>
@@ -458,7 +544,9 @@ export default function Login() {
                     transition={{ duration: 0.3 }}
                     className="space-y-2"
                   >
-                    <label className="block text-sm font-medium text-body-70">Email <span className="text-error">*</span></label>
+                    <label className="block text-sm font-medium text-body-70">
+                      Email <span className="text-error">*</span>
+                    </label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-body-50 w-4 h-4" />
                       <input
@@ -470,7 +558,9 @@ export default function Login() {
                         className={`${inputClass} pl-10`}
                       />
                     </div>
-                    {errors.email && <p className="text-error text-sm">{errors.email}</p>}
+                    {errors.email && (
+                      <p className="text-error text-sm">{errors.email}</p>
+                    )}
                   </motion.div>
                 )}
 
@@ -482,7 +572,9 @@ export default function Login() {
                     transition={{ duration: 0.3, delay: 0.1 }}
                     className="space-y-2"
                   >
-                    <label className="block text-sm font-medium text-body-70">Password <span className="text-error">*</span></label>
+                    <label className="block text-sm font-medium text-body-70">
+                      Password <span className="text-error">*</span>
+                    </label>
                     <div className="relative">
                       <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 text-body-50 w-4 h-4" />
                       <input
@@ -498,10 +590,16 @@ export default function Login() {
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute right-3 top-1/2 transform -translate-y-1/2 text-body-50 hover:text-body-70 transition-colors"
                       >
-                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        {showPassword ? (
+                          <Eye className="w-4 h-4" />
+                        ) : (
+                          <EyeOff className="w-4 h-4" />
+                        )}
                       </button>
                     </div>
-                    {errors.password && <p className="text-error text-sm">{errors.password}</p>}
+                    {errors.password && (
+                      <p className="text-error text-sm">{errors.password}</p>
+                    )}
                   </motion.div>
                 )}
 
@@ -509,20 +607,32 @@ export default function Login() {
                 <motion.button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-primary-70 to-primary-100 hover:from-primary-100 hover:to-primary-70 text-white py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+                  className="w-full flex items-center cursor-pointer justify-center gap-3 bg-gradient-to-r from-primary-70 to-primary-100 hover:from-primary-100 hover:to-primary-70 text-white py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed mt-6"
                   whileTap={{ scale: 0.98 }}
                 >
                   {isLoading ? (
                     <>
                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      {isReset ? "Resetting..." : isLogin ? "Signing in..." : "Creating Account..."}
+                      {isReset
+                        ? "Resetting..."
+                        : isLogin
+                        ? "Signing in..."
+                        : "Creating Account..."}
                     </>
                   ) : (
                     <>
-                      {isReset ? <Key className="w-5 h-5" /> : 
-                       isLogin ? <LogIn className="w-5 h-5" /> : 
-                       <UserPlus className="w-5 h-5" />}
-                      {isReset ? "Reset Password" : isLogin ? "Sign In" : "Create Account"}
+                      {isReset ? (
+                        <Key className="w-5 h-5" />
+                      ) : isLogin ? (
+                        <LogIn className="w-5 h-5" />
+                      ) : (
+                        <UserPlus className="w-5 h-5" />
+                      )}
+                      {isReset
+                        ? "Reset Password"
+                        : isLogin
+                        ? "Sign In"
+                        : "Create Account"}
                     </>
                   )}
                 </motion.button>
@@ -542,7 +652,7 @@ export default function Login() {
                       Remember your password?{" "}
                       <button
                         onClick={switchToLogin}
-                        className="text-primary-100 hover:text-primary-70 font-semibold transition-colors"
+                        className="text-primary-100 hover:text-primary-70  cursor-pointer font-semibold transition-colors"
                       >
                         Back to Sign in
                       </button>
@@ -559,7 +669,7 @@ export default function Login() {
                         Need an account?{" "}
                         <button
                           onClick={switchToSignup}
-                          className="text-primary-100 hover:text-primary-70 font-semibold transition-colors"
+                          className="text-primary-100 hover:text-primary-70 cursor-pointer font-semibold transition-colors"
                         >
                           Sign up
                         </button>
@@ -568,7 +678,7 @@ export default function Login() {
                         Forgot your password?{" "}
                         <button
                           onClick={switchToReset}
-                          className="text-primary-100 hover:text-primary-70 font-semibold transition-colors"
+                          className="text-primary-100 hover:text-primary-70 cursor-pointer font-semibold transition-colors"
                         >
                           Reset it
                         </button>
@@ -585,7 +695,7 @@ export default function Login() {
                       Already have an account?{" "}
                       <button
                         onClick={switchToLogin}
-                        className="text-primary-100 hover:text-primary-70 font-semibold transition-colors"
+                        className="text-primary-100 hover:text-primary-70 cursor-pointer font-semibold transition-colors"
                       >
                         Sign in
                       </button>

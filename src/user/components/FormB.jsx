@@ -12,17 +12,26 @@ const FormB = () => {
 
   const validateForm = () => {
     const newErrors = {};
+    if (!childProfile.firstName?.trim())
+      newErrors.firstName = "first name is required";
+    if (!childProfile.lastName?.trim())
+      newErrors.lastName = "last name is required";
 
 if (!selectedEvent || selectedEvent === "") {
   newErrors.event = "Please select an event";
 }
 
-    if (!childProfile.name?.trim()) newErrors.name = "Name is required";
+  
     if (!childProfile.dob) newErrors.dob = "Date of Birth is required";
     if (!childProfile.gender) newErrors.gender = "Gender is required";
-    if (!childProfile.diagnosis?.trim()) newErrors.diagnosis = "Diagnosis is required";
-    if (!childProfile.presentComplaint?.trim()) newErrors.presentComplaint = "Present Complaint is required";
-    if (!childProfile.medicalHistory || !childProfile.medicalHistory.replace(/<[^>]*>/g, "").trim()) {
+    if (!childProfile.diagnosis?.trim())
+      newErrors.diagnosis = "Diagnosis is required";
+    if (!childProfile.presentComplaint?.trim())
+      newErrors.presentComplaint = "Present Complaint is required";
+    if (
+      !childProfile.medicalHistory ||
+      !childProfile.medicalHistory.replace(/<[^>]*>/g, "").trim()
+    ) {
       newErrors.medicalHistory = "Medical History is required";
     }
     setErrors(newErrors);
@@ -89,13 +98,27 @@ if (!selectedEvent || selectedEvent === "") {
     height: 200,
     toolbarAdaptive: false,
     buttons: [
-      'bold', 'italic', 'underline', '|',
-      'ul', 'ol', '|',
-      'font', 'fontsize', 'brush', 'paragraph', '|',
-      'align', 'undo', 'redo', '|',
-      'cut', 'copy', 'paste',
+      "bold",
+      "italic",
+      "underline",
+      "|",
+      "ul",
+      "ol",
+      "|",
+      "font",
+      "fontsize",
+      "brush",
+      "paragraph",
+      "|",
+      "align",
+      "undo",
+      "redo",
+      "|",
+      "cut",
+      "copy",
+      "paste",
     ],
-    placeholder: "Enter medical history..."
+    placeholder: "Enter medical history...",
   };
 
   return (
@@ -115,32 +138,81 @@ if (!selectedEvent || selectedEvent === "") {
           <Heart className="w-5 h-5 md:w-6 md:h-6 text-white" />
         </div>
         <div>
-          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-body-100">Child Profile Information</h2>
-          <p className="text-body-50 text-sm">Patient information and medical background</p>
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-body-100">
+            Child Profile Information
+          </h2>
+          <p className="text-body-50 text-sm">
+            Patient information and medical background
+          </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
         {/* Name */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-body-70">Name <span className="text-error">*</span></label>
+          <label className="block text-sm font-medium text-body-70">
+            First Name <span className="text-error">*</span>
+          </label>
           <div className="relative">
             <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-body-50 w-4 h-4" />
             <input
               type="text"
-              name="name"
-              value={childProfile.name || ""}
+              name="firstName"
+              value={childProfile.firstName || ""}
               onChange={handleChange}
               className={`${inputClass} pl-10`}
-              placeholder="Enter full name"
+              placeholder="Enter first name"
             />
           </div>
-          {errors.name && <p className="text-error text-sm mt-1">{errors.name}</p>}
+
+          {errors.firstName && (
+            <p className="text-error text-sm mt-1">{errors.firstName}</p>
+          )}
+        </div>
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-body-70">
+            Middle Name
+          </label>
+          <div className="relative">
+            <input
+              type="text"
+              name="middleName"
+              value={childProfile.middleName || ""}
+              onChange={handleChange}
+              className={inputClass}
+              placeholder="Enter Middle name"
+            />
+          </div>
+
+          {errors.middleName && (
+            <p className="text-error text-sm mt-1">{errors.middleName}</p>
+          )}
+        </div>
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-body-70">
+            Last Name <span className="text-error">*</span>
+          </label>
+          <div className="relative">
+            <input
+              type="text"
+              name="lastName"
+              value={childProfile.lastName || ""}
+              onChange={handleChange}
+              className={`${inputClass} pl-10`}
+              placeholder="Enter Last name"
+            />
+          </div>
+
+          {errors.lastName && (
+            <p className="text-error text-sm mt-1">{errors.lastName}</p>
+          )}
         </div>
 
         {/* Date of Birth */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-body-70">Date of Birth <span className="text-error">*</span></label>
+          <label className="block text-sm font-medium text-body-70">
+            Date of Birth <span className="text-error">*</span>
+          </label>
           <div className="relative">
             <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-body-50 w-4 h-4 z-10" />
             <DatePicker
@@ -153,15 +225,22 @@ if (!selectedEvent || selectedEvent === "") {
               icon={false}
             />
           </div>
-          {errors.dob && <p className="text-error text-sm mt-1">{errors.dob}</p>}
+          {errors.dob && (
+            <p className="text-error text-sm mt-1">{errors.dob}</p>
+          )}
         </div>
 
         {/* Gender */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-body-70">Gender <span className="text-error">*</span></label>
+          <label className="block text-sm font-medium text-body-70">
+            Gender <span className="text-error">*</span>
+          </label>
           <div className="flex flex-wrap gap-3">
             {["Male", "Female", "Other"].map((g) => (
-              <label key={g} className="flex items-center space-x-2 text-sm cursor-pointer">
+              <label
+                key={g}
+                className="flex items-center space-x-2 text-sm cursor-pointer"
+              >
                 <input
                   type="radio"
                   name="gender"
@@ -174,14 +253,18 @@ if (!selectedEvent || selectedEvent === "") {
               </label>
             ))}
           </div>
-          {errors.gender && <p className="text-error text-sm mt-1">{errors.gender}</p>}
+          {errors.gender && (
+            <p className="text-error text-sm mt-1">{errors.gender}</p>
+          )}
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
         {/* Diagnosis */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-body-70">Diagnosis <span className="text-error">*</span></label>
+          <label className="block text-sm font-medium text-body-70">
+            Diagnosis <span className="text-error">*</span>
+          </label>
           <div className="relative">
             <Stethoscope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-body-50 w-4 h-4" />
             <input
@@ -193,12 +276,16 @@ if (!selectedEvent || selectedEvent === "") {
               placeholder="Enter diagnosis"
             />
           </div>
-          {errors.diagnosis && <p className="text-error text-sm mt-1">{errors.diagnosis}</p>}
+          {errors.diagnosis && (
+            <p className="text-error text-sm mt-1">{errors.diagnosis}</p>
+          )}
         </div>
 
         {/* Present Complaint */}
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-body-70">Present Complaint <span className="text-error">*</span></label>
+          <label className="block text-sm font-medium text-body-70">
+            Present Complaint <span className="text-error">*</span>
+          </label>
           <input
             type="text"
             name="presentComplaint"
@@ -207,13 +294,17 @@ if (!selectedEvent || selectedEvent === "") {
             className={inputClass}
             placeholder="Enter present complaint"
           />
-          {errors.presentComplaint && <p className="text-error text-sm mt-1">{errors.presentComplaint}</p>}
+          {errors.presentComplaint && (
+            <p className="text-error text-sm mt-1">{errors.presentComplaint}</p>
+          )}
         </div>
       </div>
 
       {/* Medical History */}
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-body-70">Medical History <span className="text-error">*</span></label>
+        <label className="block text-sm font-medium text-body-70">
+          Medical History <span className="text-error">*</span>
+        </label>
         <div className="border border-body-30 rounded-lg overflow-hidden">
           <JoditEditor
             ref={editorRef}
@@ -222,7 +313,9 @@ if (!selectedEvent || selectedEvent === "") {
             onBlur={handleMedicalHistoryChange}
           />
         </div>
-        {errors.medicalHistory && <p className="text-error text-sm mt-1">{errors.medicalHistory}</p>}
+        {errors.medicalHistory && (
+          <p className="text-error text-sm mt-1">{errors.medicalHistory}</p>
+        )}
       </div>
 
       {/* Navigation */}

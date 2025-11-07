@@ -99,7 +99,7 @@ const AssignmenTableData = ({ data }) => {
                 </td>
                 <td className="px-4 md:px-6 py-3 md:py-4">
                   <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-secondary-50/20 text-secondary-100 border border-secondary-50/30">
-                    {item.participantInfo?.enrollmentType || "N/A"}
+                    {item.participantInfo?.enrollmentId || "N/A"}
                   </span>
                 </td>
                 <td className="px-4 md:px-6 py-3 md:py-4">
@@ -108,7 +108,7 @@ const AssignmenTableData = ({ data }) => {
                       <User className="w-3 h-3 md:w-4 md:h-4 text-white" />
                     </div>
                     <div>
-                      <div className="font-semibold text-body-100 text-sm md:text-base capitalize">
+                      <div className="font-semibold text-body-100 text-sm md:text-base capitalize whitespace-nowrap">
                         {item.participantInfo?.fName} {item.participantInfo?.lName}
                       </div>
                       <div className="text-xs text-body-50">Participant</div>
@@ -141,15 +141,15 @@ const AssignmenTableData = ({ data }) => {
                 </td>
                 <td className="px-4 md:px-6 py-3 md:py-4">
                   <div className="flex items-center gap-2">
-                    <MapPin className="w-3 h-3 md:w-4 md:h-4 text-body-50" />
-                    <span className="text-body-70 text-sm">{item.participantInfo?.state || "N/A"}</span>
+                    <MapPin className="w-3 h-3 md:w-4 md:h-4 text-body-50 " />
+                    <span className="text-body-70 text-sm whitespace-nowrap">{item.participantInfo?.state || "N/A"}</span>
                   </div>
                 </td>
                 <td className="px-4 md:px-6 py-3 md:py-4">
                   <span className="text-body-70 text-sm">{item.participantInfo?.city || "N/A"}</span>
                 </td>
                 <td className="px-4 md:px-6 py-3 md:py-4">
-                  <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-ternary-50/20 text-ternary-100 border border-ternary-50/30 capitalize">
+                  <span className="whitespace-nowrap inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-ternary-50/20 text-ternary-100 border border-ternary-50/30 capitalize">
                     {item.participantInfo?.therapistType || "N/A"}
                   </span>
                 </td>
@@ -197,7 +197,7 @@ const AssignmenTableData = ({ data }) => {
                   <div className="font-semibold text-body-100 capitalize">
                     {item.participantInfo?.fName} {item.participantInfo?.lName}
                   </div>
-                  <div className="text-xs text-body-50">#{index + 1} • {item.participantInfo?.enrollmentType || "N/A"}</div>
+                  <div className="text-xs text-body-50">#{index + 1} • {item.participantInfo?.enrollmentId || "N/A"}</div>
                 </div>
               </div>
               <button

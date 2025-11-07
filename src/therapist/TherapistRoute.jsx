@@ -1,10 +1,12 @@
 import Footer from "../components/Footer";
-import { Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import Assignments from "../therapist/pages/Assignments";
 import OSITAssignmentPreview from "../components/shared/OSITAssignmentPreview";
 import { useAuthStore } from "../store/authStore";
 import { saveUserToLocal } from "../Utils/auth";
 import { LogOut, User } from "lucide-react";
+import EventsDetails from "./pages/EventsDetails";
+import AddEventForm from "./components/events/AddEventForm";
 
 const TherapistRoute = () => {
   const { logout, user } = useAuthStore();
@@ -12,7 +14,7 @@ const TherapistRoute = () => {
   const handleLogout = () => {
     logout();
     saveUserToLocal(null);
-   window.location.replace("/");
+    window.location.replace("/");
   };
 
   return (
@@ -24,7 +26,7 @@ const TherapistRoute = () => {
             {/* Logo */}
             <div className="flex items-center">
               <img
-                src="https://gmsassets.z29.web.core.windows.net/public/logo1.png"
+                src={"./speechgearsLogo.png"}
                 alt="Speechgears Research Institute"
                 className="h-8 md:h-10 w-auto"
               />
@@ -32,6 +34,12 @@ const TherapistRoute = () => {
 
             {/* User Info & Logout */}
             <div className="flex items-center gap-4">
+              <Link
+                className="bg-primary-70 text-white p-2 rounded-xl"
+                to={`/events`}
+              >
+                Events
+              </Link>
               {/* User Profile */}
               <div className="flex items-center gap-2 text-body-70">
                 <div className="w-8 h-8 bg-gradient-to-br from-primary-50 to-primary-70 rounded-full flex items-center justify-center">
@@ -41,7 +49,7 @@ const TherapistRoute = () => {
                   {user?.profile?.fName || "Therapist"}
                 </span>
               </div>
-              
+
               {/* Logout Button */}
               <button
                 onClick={handleLogout}
@@ -59,6 +67,8 @@ const TherapistRoute = () => {
       <main className="flex-grow w-full">
         <Routes>
           <Route path="/" element={<Assignments />} />
+          <Route path="/events" element={<EventsDetails />} />
+          <Route path="/addeventForm" element={<AddEventForm />} />
           <Route
             path="/assignment/:ositAssigmnentId"
             element={<OSITAssignmentPreview />}

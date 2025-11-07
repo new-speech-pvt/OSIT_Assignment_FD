@@ -6,11 +6,11 @@ import toast from "react-hot-toast";
 
 const OSITScoringForm = ({ ositAssigmnentId, callback }) => {
   const criteriaList = [
-    "Understanding of Instructions",
-    "Attention to Detail",
-    "Response Time",
-    "Social Interaction",
-    "Emotional Regulation",
+    "Relevance and clarity in problem selection",
+    "Appropriateness and detail in plan of action",
+    "Justification and effectiveness of tool selection",
+    "Design and execution of intervention plan",
+    "Clarity, structure, and presentation of report",
   ];
 
   const [scores, setScores] = useState(
@@ -63,7 +63,7 @@ const OSITScoringForm = ({ ositAssigmnentId, callback }) => {
       );
       if (response.status === 200) {
         toast.success("Assessment scored successfully!");
-        callback();
+       await callback();
         setScores(criteriaList.map(() => ({ obtainedMarks: "", remarks: "" })));
       }
     } catch (error) {
@@ -99,7 +99,8 @@ const OSITScoringForm = ({ ositAssigmnentId, callback }) => {
       {/* Header Card */}
       <div className="bg-white rounded-xl md:rounded-2xl shadow-lg border border-body-30 p-4 md:p-6 mb-4 md:mb-6">
         <div className="text-center">
-          <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-3 md:mb-4 shadow-md">
+          <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-primary-50 to-primary
+          -100 rounded-xl md:rounded-2xl flex items-center justify-center mx-auto mb-3 md:mb-4 shadow-md">
             <Star className="w-6 h-6 md:w-8 md:h-8 text-white" />
           </div>
           <h1 className="text-xl md:h1 text-body-100 font-bold mb-2">OSIT Assessment Scoring</h1>
@@ -193,11 +194,11 @@ const OSITScoringForm = ({ ositAssigmnentId, callback }) => {
                         onChange={(e) =>
                           handleChange(index, "obtainedMarks", e.target.value)
                         }
-                        className="w-full px-3 md:px-4 py-2 md:py-3 border border-body-30 rounded-lg md:rounded-xl text-center font-semibold text-body-100 focus:outline-none focus:ring-2 focus:ring-primary-50 focus:border-primary-50 transition-all duration-200 bg-white text-sm md:text-base"
+                        className="w-full md:w-40 px-3 md:px-4 py-2 md:py-3 border border-body-30 rounded-lg md:rounded-xl text-center font-semibold text-body-100 focus:outline-none focus:ring-2 focus:ring-primary-50 focus:border-primary-50 transition-all duration-200 bg-white text-sm md:text-base"
                         placeholder="0-10"
                       />
                       <div className="absolute inset-y-0 left-0 pl-2 md:pl-3 flex items-center pointer-events-none">
-                        <Star className="w-3 h-3 md:w-4 md:h-4 text-body-50" />
+                        <Star className="w-3 h-3 md:w-5 md:h-4 text-body-50" />
                       </div>
                     </div>
 
@@ -243,7 +244,7 @@ const OSITScoringForm = ({ ositAssigmnentId, callback }) => {
 
             {/* Submit Button */}
             <div className="flex flex-col gap-2 md:gap-3">
-              {!isFormComplete && (
+              {!isFormComplete && !isSubmitting && (
                 <div className="flex items-center gap-1 md:gap-2 text-error text-xs md:text-sm">
                   <AlertCircle className="w-3 h-3 md:w-4 md:h-4" />
                   Please fill all scores

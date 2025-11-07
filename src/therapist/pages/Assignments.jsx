@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
-import { Loader2, Calendar, FileText, Users, Filter, Search, Plus } from "lucide-react";
+import {
+  Loader2,
+  Calendar,
+  FileText,
+  Users,
+  Filter,
+  Search,
+  Plus,
+} from "lucide-react";
 import { getUserFromLocal } from "../../Utils/auth";
 import { axiosClient } from "../../Utils/axiosClient";
 import AssignmenTableData from "../components/assignments/AssignmenTableData";
@@ -37,8 +45,12 @@ const Assignments = () => {
             <Loader2 className="animate-spin text-primary-100 w-12 h-12 md:w-16 md:h-16" />
             <div className="absolute inset-0 bg-gradient-to-r from-primary-50 to-primary-70 blur-sm opacity-20 rounded-full animate-pulse"></div>
           </div>
-          <h3 className="h4 text-body-100 mt-4 md:mt-6 font-semibold">Loading Assignments</h3>
-          <p className="text-body-50 mt-2 text-sm md:text-base">Please wait while we fetch your data</p>
+          <h3 className="h4 text-body-100 mt-4 md:mt-6 font-semibold">
+            Loading Assignments
+          </h3>
+          <p className="text-body-50 mt-2 text-sm md:text-base">
+            Please wait while we fetch your data
+          </p>
         </div>
       </div>
     );
@@ -56,7 +68,9 @@ const Assignments = () => {
                   <FileText className="w-5 h-5 md:w-6 md:h-6 text-white" />
                 </div>
                 <div>
-                  <h1 className="text-2xl md:h1 text-body-100 font-bold tracking-tight">Assignment Manager</h1>
+                  <h1 className="text-2xl md:h1 text-body-100 font-bold tracking-tight">
+                    Assignment Manager
+                  </h1>
                   <p className="text-body-70 text-sm md:text-lg mt-1">
                     Manage and monitor all patient assignments efficiently
                   </p>
@@ -66,11 +80,11 @@ const Assignments = () => {
 
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-2 md:gap-3">
-              <button className="px-4 py-2 md:px-6 md:py-3 bg-white border border-body-30 rounded-xl text-body-70 font-semibold hover:bg-body-20 transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 text-sm md:text-base">
+              <button className="px-4 py-2 md:px-6 md:py-3 cursor-pointer bg-white border border-body-30 rounded-xl text-body-70 font-semibold hover:bg-body-20 transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 text-sm md:text-base">
                 <Filter className="w-4 h-4" />
                 <span className="hidden sm:inline">Filter</span>
               </button>
-              <button className="px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r from-primary-70 to-primary-100 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-200 shadow-md hover:shadow-xl flex items-center gap-2 text-sm md:text-base">
+              <button className="px-4 py-2 md:px-6 md:py-3 bg-gradient-to-r from-primary-70 to-primary-100 text-white rounded-xl font-semibold hover:shadow-xl transition-all duration-200 shadow-md cursor-pointer flex items-center gap-2 text-sm md:text-base">
                 <Plus className="w-4 h-4" />
                 <span className="hidden sm:inline">New Assignment</span>
                 <span className="sm:hidden">New</span>
@@ -87,8 +101,12 @@ const Assignments = () => {
           <div className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg border border-body-30 hover:shadow-xl transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-body-70 font-medium text-xs md:text-sm mb-1 md:mb-2">Total</p>
-                <p className="text-lg md:h2 text-body-100 font-bold">{data?.length || 0}</p>
+                <p className="text-body-70 font-medium text-xs md:text-sm mb-1 md:mb-2">
+                  Total Registration
+                </p>
+                <p className="text-lg md:h2 text-body-100 font-bold">
+                  {data?.length || 0}
+                </p>
               </div>
               <div className="w-8 h-8 md:w-12 md:h-12 bg-primary-50 rounded-lg md:rounded-xl flex items-center justify-center">
                 <FileText className="w-4 h-4 md:w-6 md:h-6 text-primary-100" />
@@ -103,9 +121,11 @@ const Assignments = () => {
           <div className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg border border-body-30 hover:shadow-xl transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-body-70 font-medium text-xs md:text-sm mb-1 md:mb-2">Active</p>
+                <p className="text-body-70 font-medium text-xs md:text-sm mb-1 md:mb-2">
+                  Active
+                </p>
                 <p className="text-lg md:h2 text-body-100 font-bold">
-                  {data?.filter(item => item.status === 'active').length || 0}
+                  {data?.filter((item) => item.status === "active").length || 0}
                 </p>
               </div>
               <div className="w-8 h-8 md:w-12 md:h-12 bg-secondary-50 rounded-lg md:rounded-xl flex items-center justify-center">
@@ -121,9 +141,12 @@ const Assignments = () => {
           <div className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg border border-body-30 hover:shadow-xl transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-body-70 font-medium text-xs md:text-sm mb-1 md:mb-2">Completed</p>
+                <p className="text-body-70 font-medium text-xs md:text-sm mb-1 md:mb-2">
+                  Completed
+                </p>
                 <p className="text-lg md:h2 text-body-100 font-bold">
-                  {data?.filter(item => item.status === 'completed').length || 0}
+                  {data?.filter((item) => item.status === "completed").length ||
+                    0}
                 </p>
               </div>
               <div className="w-8 h-8 md:w-12 md:h-12 bg-ternary-70 rounded-lg md:rounded-xl flex items-center justify-center">
@@ -139,9 +162,12 @@ const Assignments = () => {
           <div className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg border border-body-30 hover:shadow-xl transition-all duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-body-70 font-medium text-xs md:text-sm mb-1 md:mb-2">Pending</p>
+                <p className="text-body-70 font-medium text-xs md:text-sm mb-1 md:mb-2">
+                  Pending
+                </p>
                 <p className="text-lg md:h2 text-body-100 font-bold">
-                  {data?.filter(item => item.status === 'pending').length || 0}
+                  {data?.filter((item) => item.status === "pending").length ||
+                    0}
                 </p>
               </div>
               <div className="w-8 h-8 md:w-12 md:h-12 bg-body-30 rounded-lg md:rounded-xl flex items-center justify-center">
@@ -172,19 +198,19 @@ const Assignments = () => {
                 />
               </div>
             </div>
-            
+
             <div className="flex flex-wrap gap-2 md:gap-3">
-              <select 
+              <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
-                className="px-3 py-2 md:px-4 md:py-3 border border-body-30 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-50 focus:border-primary-50 bg-white transition-all duration-200 text-sm md:text-base flex-1 min-w-[120px]"
+                className="px-3 py-2 md:px-4 md:py-3 border border-body-30 rounded-xl cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary-50 focus:border-primary-50 bg-white transition-all duration-200 text-sm md:text-base flex-1 min-w-[120px]"
               >
                 <option value="all">All Status</option>
                 <option value="active">Active</option>
                 <option value="completed">Completed</option>
                 <option value="pending">Pending</option>
               </select>
-              
+
               <div className="flex items-center gap-2 text-body-50 text-xs md:text-sm bg-body-20 px-3 py-2 md:px-4 md:py-3 rounded-xl">
                 <Calendar className="w-3 h-3 md:w-4 md:h-4" />
                 <span>Updated: {new Date().toLocaleDateString()}</span>
