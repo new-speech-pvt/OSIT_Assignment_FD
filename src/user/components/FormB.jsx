@@ -5,8 +5,7 @@ import { OsitAssignmentContext } from "../contexts/OsitAssignmentContext";
 import { User, Calendar, Stethoscope, Heart } from "lucide-react";
 
 const FormB = () => {
-  const { activeStep, setActiveStep, childProfile, setChildProfile, steps } =
-    useContext(OsitAssignmentContext);
+  const { activeStep, setActiveStep, childProfile, setChildProfile, steps, eventData, selectedEvent, setSelectedEvent } = useContext(OsitAssignmentContext);
   const editorRef = useRef(null);
   const [errors, setErrors] = useState({});
   const [submitStatus, setSubmitStatus] = useState(null);
@@ -17,6 +16,12 @@ const FormB = () => {
       newErrors.firstName = "first name is required";
     if (!childProfile.lastName?.trim())
       newErrors.lastName = "last name is required";
+
+if (!selectedEvent || selectedEvent === "") {
+  newErrors.event = "Please select an event";
+}
+
+  
     if (!childProfile.dob) newErrors.dob = "Date of Birth is required";
     if (!childProfile.gender) newErrors.gender = "Gender is required";
     if (!childProfile.diagnosis?.trim())
@@ -31,12 +36,12 @@ const FormB = () => {
     }
     setErrors(newErrors);
 
-    if (Object.keys(newErrors).length > 0) {
-      const firstErrorField = Object.keys(newErrors)[0];
-      const el = document.querySelector(`[name="${firstErrorField}"]`);
-      el?.scrollIntoView({ behavior: "smooth", block: "center" });
-      setTimeout(() => el?.focus(), 300);
-    }
+    // if (Object.keys(newErrors).length > 0) {
+    //   const firstErrorField = Object.keys(newErrors)[0];
+    //   const el = document.querySelector(`[name="${firstErrorField}"]`);
+    //   el?.scrollIntoView({ behavior: "smooth", block: "center" });
+    //   setTimeout(() => el?.focus(), 300);
+    // }
     return Object.keys(newErrors).length === 0;
   };
 
@@ -45,13 +50,21 @@ const FormB = () => {
     const updated = { ...childProfile, [name]: value };
     setChildProfile(updated);
     localStorage.setItem("childProfile", JSON.stringify(updated));
+    console.log(updated);
+
     setSubmitStatus(null);
   };
+
+  const handleEventSelect = (e) => {
+    setSelectedEvent(e.target.value)
+  }
 
   const handleMedicalHistoryChange = (newContent) => {
     const updated = { ...childProfile, medicalHistory: newContent };
     setChildProfile(updated);
     localStorage.setItem("childProfile", JSON.stringify(updated));
+    console.log(updated);
+
     setSubmitStatus(null);
   };
 
@@ -60,6 +73,8 @@ const FormB = () => {
     const updated = { ...childProfile, dob: val };
     setChildProfile(updated);
     localStorage.setItem("childProfile", JSON.stringify(updated));
+    console.log(updated);
+
     setSubmitStatus(null);
   };
 
@@ -69,12 +84,14 @@ const FormB = () => {
 
   const handleNextOrSubmit = () => {
     if (!validateForm()) return;
-    setSubmitStatus("✅ Form saved successfully");
+    setSubmitStatus("Form saved successfully");
+
     setActiveStep((prev) => Math.min(prev + 1, steps.length - 1));
   };
 
-  const inputClass =
-    "w-full px-3 py-3 border border-body-30 rounded-lg text-body-100 focus:outline-none focus:ring-2 focus:ring-primary-50 focus:border-primary-50 transition-all duration-200 bg-white";
+
+
+  const inputClass = "w-full px-3 py-3 border border-body-30 rounded-lg text-body-100 focus:outline-none focus:ring-2 focus:ring-primary-50 focus:border-primary-50 transition-all duration-200 bg-white";
 
   const joditConfig = {
     readonly: false,
@@ -105,7 +122,16 @@ const FormB = () => {
   };
 
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-6 ">
+      <select name="event" value={selectedEvent || ""} onChange={handleEventSelect} className="px-3 py-2 md:px-4 md:py-3 cursor-pointer border border-body-30 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-50 focus:border-primary-50 bg-white transition-all duration-200 text-sm md:text-base flex-1 min-w-[120px]">
+
+        <option value="">Select Option</option>
+        {eventData.map((data) => {
+          return <option key={data?._id} value={data?._id}>{data?.name}</option>
+        })}
+      </select>
+      {errors.event && <p className="text-error text-sm mt-1">{errors.event}</p>}
+
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <div className="w-10 h-10 md:w-12 md:h-12 bg-ternary-70 rounded-xl flex items-center justify-center">
