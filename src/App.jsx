@@ -3,16 +3,20 @@ import { useAuthStore } from "./store/authStore";
 import UserRoutes from "./user/UserRoutes";
 import TherapistRoute from "./therapist/TherapistRoute";
 import Login from "./components/Login";
+import MetaDescriptionComponent from "./components/SEO/MetaDescriptionComponent";
 const App = () => {
   const { user } = useAuthStore();
 
   return (
     <div>
+      <MetaDescriptionComponent
+        metaTitle={"OSIT Practical Exercise | SpeechGears India "}
+      />
       <Toaster
         toastOptions={{
-          success:{
-            duration:10
-          }
+          success: {
+            duration: 3000,
+          },
         }}
       />
 

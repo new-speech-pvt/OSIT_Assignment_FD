@@ -56,25 +56,25 @@ const FormC = () => {
   const editorSections = [
     {
       key: "problemStatement",
-      label: "Problem Statement",
+      label: "Problem Statement for the problem state",
       icon: FileText,
       placeholder: "Describe the main problem statement..."
     },
     {
       key: "identificationAndObjectiveSetting",
-      label: "Identification & Objective Setting",
+      label: "Identification & Objective Setting for the problem state",
       icon: Target,
       placeholder: "Identify objectives and set goals..."
     },
     {
       key: "planningAndToolSection",
-      label: "Planning & Tool Section",
+      label: "Planning & Tool Selection for the problem state",
       icon: Calendar,
       placeholder: "Outline the planning and tools required..."
     },
     {
       key: "toolStrategiesApproaches",
-      label: "Tool Strategies & Approaches",
+      label: "Tool Strategies & Approaches for the problem state",
       icon: Settings,
       placeholder: "Describe strategies and approaches..."
     }

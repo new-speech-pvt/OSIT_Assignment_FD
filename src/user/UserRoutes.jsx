@@ -38,9 +38,9 @@ const UserRoutes = () => {
               {/* Logo */}
               <div className="flex items-center">
                 <img
-                  src="https://gmsassets.z29.web.core.windows.net/public/logo1.png"
+                  src={"./speechgearsLogo.png"}
                   alt="Speechgears Research Institute"
-                  className="h-6 md:h-10 w-auto"
+                  className="h-8 md:h-10  w-auto"
                 />
               </div>
 
@@ -55,7 +55,7 @@ const UserRoutes = () => {
                     {user?.profile?.fName || "Participant"}
                   </span>
                 </div>
-                
+
                 {/* Logout Button */}
                 <button
                   onClick={handleLogout}
@@ -73,11 +73,14 @@ const UserRoutes = () => {
         <main className="flex-grow w-full">
           <Routes>
             <Route element={<ProtectedRoute />}>
-              <Route path="/" element={
-                <OsitAssignmentProvider>
-                  <HomePage />
-                </OsitAssignmentProvider>
-              } />
+              <Route
+                path="/"
+                element={
+                  <OsitAssignmentProvider>
+                    <HomePage />
+                  </OsitAssignmentProvider>
+                }
+              />
               <Route
                 path="/assignment/:ositAssigmnentId"
                 element={<OSITAssignmentPreview role="USER" />}
