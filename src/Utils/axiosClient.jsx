@@ -5,6 +5,10 @@ export const axiosClient = axios.create({
   baseURL: "https://osit-assignment-bd.onrender.com",
 });
 
+// export const axiosClient = axios.create({
+//   baseURL:"http://localhost:3001"
+// });
+
 // Remove the module-level user declaration
 // Add request interceptor that gets fresh token for each request
 axiosClient.interceptors.request.use(

@@ -1,13 +1,34 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { OsitAssignmentContext } from '../contexts/OsitAssignmentContext';
+import { Link } from 'lucide-react';
+import { axiosClient } from '../../Utils/axiosClient';
 
 const AssignmentForm2 = () => {
 
 
-    const { activeStep, setActiveStep, getStepStyle, renderForm, steps } = useContext(OsitAssignmentContext)
+    const { activeStep, setActiveStep, getStepStyle, renderForm, steps,setEventData} = useContext(OsitAssignmentContext)
 
 
     // completedForm
+
+    //event api 
+
+  const fetchEvent = async ()=>{
+
+    try {
+      const response = await axiosClient.get(`/event`)
+      setEventData(response.data?.data || []);
+console.log("responseeee",response.data)
+    } catch (error) {
+
+       console.error("Error fetching events:", error);
+
+    }
+  }
+   useEffect(() => {
+    fetchEvent()  
+    }, []);
+
 
 
 
@@ -38,9 +59,7 @@ const AssignmentForm2 = () => {
                                 >
                                     {index < activeStep ? "✓" : index + 1}
                                 </button>
-                                {/* <span className="text-xs md:text-sm mt-2 font-medium">
-                                    {step}
-                                </span> */}
+
                             </div>
                         ))}
                     </div>
@@ -58,7 +77,8 @@ const AssignmentForm2 = () => {
                 </div>
 
                 {/* Form Section */}
-                <div className="md:p-8 p-2  h-[calc(100vh-266px)] */}  overflow-y-auto bg-gray-50 rounded-b-3xl">
+                <div className="md:p-8 p-2  h-[calc(100vh-266px)] overflow-y-auto bg-gray-50 rounded-b-3xl">
+
                     {renderForm()}
                 </div>
 
@@ -67,7 +87,7 @@ const AssignmentForm2 = () => {
                     Step {activeStep + 1} of {steps.length} — Keep it up
                 </div>
             </div>
-        </div>   
+        </div>
 
     );
 };
