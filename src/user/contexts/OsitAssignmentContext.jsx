@@ -14,6 +14,7 @@ const OsitAssignmentProvider = ({ children }) => {
     activity: [""],
     childResponse: "",
     date: "",
+    tool:""
   };
   const weeks = ["week1", "week2", "week3", "week4", "week5"];
 
@@ -27,19 +28,8 @@ const OsitAssignmentProvider = ({ children }) => {
   };
 
   const [activeStep, setActiveStep] = useState(0);
-  // const [participantInfo, setParticipantInfo] = useState({
-  //     fName: '',
-  //     lName: '',
-  //     gender: '',
-  //     dob: '',
-  //     phone: '',
-  //     email: '',
-  //     state: '',
-  //     city: '',
-  //     therapistType: '',
-  //     enrollmentId: ''
-  // });
-
+  const [eventData, setEventData] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState("")
   const [childProfile, setChildProfile] = useState({
     name: "",
     dob: "",
@@ -47,7 +37,8 @@ const OsitAssignmentProvider = ({ children }) => {
     diagnosis: "",
     presentComplaint: "",
     medicalHistory: "",
-  });
+    event:""
+  }); 
 
   const [assignmentDetail, setAssignmentDetails] = useState({
     problemStatement: "",
@@ -144,6 +135,7 @@ const OsitAssignmentProvider = ({ children }) => {
       diagnosis: "",
       presentComplaint: "",
       medicalHistory: "",
+      event:""
     });
     setAssignmentDetails({
       problemStatement: "",
@@ -176,19 +168,7 @@ const OsitAssignmentProvider = ({ children }) => {
 
       // Transform data to match backend structure
       const transformedData = {
-        // participantInfo: {
-        //     fName: participantInfo.fName || '',
-        //     lName: participantInfo.lName || '',
-        //     gender: participantInfo.gender || '',
-        //     dob: formatDate(participantInfo.dob),
-        //     phone: participantInfo.phone || '',
-        //     email: participantInfo.email || '',
-        //     state: participantInfo.state || '',
-        //     city: participantInfo.city || '',
-        //     therapistType: participantInfo.therapistType || '',
-        //     enrollmentId: participantInfo.enrollmentId || 'DEFAULT123',
-        // },
-
+        event: selectedEvent,
         childProfile: {
           name: childProfile.name || "",
           dob: formatDate(childProfile.dob),
@@ -196,6 +176,7 @@ const OsitAssignmentProvider = ({ children }) => {
           diagnosis: childProfile.diagnosis || "",
           presentComplaint: childProfile.presentComplaint || "",
           medicalHistory: childProfile.medicalHistory || "",
+          event:childProfile.event || ""
         },
         assignmentDetail: {
           problemStatement: assignmentDetail.problemStatement || "",
@@ -211,8 +192,6 @@ const OsitAssignmentProvider = ({ children }) => {
           week3: { sessions: interventionPlan.week3 || [] },
           week4: { sessions: interventionPlan.week4 || [] },
           week5: { sessions: interventionPlan.week5 || [] },
-          mentionToolUsedForRespectiveGoal:
-            interventionPlan.mentionToolUsedForRespectiveGoal || "",
         },
       };
 
@@ -240,9 +219,10 @@ const OsitAssignmentProvider = ({ children }) => {
       console.log("API Response:", response);
 
       // Reset forms and show success
-      resetAllForms();
-      setSubmitStatus("Form submitted successfully");
-      window.location.reload();
+      // resetAllForms();
+      // setSubmitStatus("Form submitted successfully");
+      // window.location.reload();
+      
     } catch (error) {
       console.log("API Error:", error.response?.data || error);
       setSubmitStatus("Submission failed. Please try again.");
@@ -271,6 +251,9 @@ const OsitAssignmentProvider = ({ children }) => {
         setSubmitStatus,
         handleFormCompletion,
         resetAllForms,
+        eventData,
+        setEventData,
+        selectedEvent, setSelectedEvent
       }}
     >
       {children}

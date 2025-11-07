@@ -5,13 +5,18 @@ import { OsitAssignmentContext } from "../contexts/OsitAssignmentContext";
 import { User, Calendar, Stethoscope, Heart } from "lucide-react";
 
 const FormB = () => {
-  const { activeStep, setActiveStep, childProfile, setChildProfile, steps } = useContext(OsitAssignmentContext);
+  const { activeStep, setActiveStep, childProfile, setChildProfile, steps, eventData, selectedEvent, setSelectedEvent } = useContext(OsitAssignmentContext);
   const editorRef = useRef(null);
   const [errors, setErrors] = useState({});
   const [submitStatus, setSubmitStatus] = useState(null);
 
   const validateForm = () => {
     const newErrors = {};
+
+if (!selectedEvent || selectedEvent === "") {
+  newErrors.event = "Please select an event";
+}
+
     if (!childProfile.name?.trim()) newErrors.name = "Name is required";
     if (!childProfile.dob) newErrors.dob = "Date of Birth is required";
     if (!childProfile.gender) newErrors.gender = "Gender is required";
@@ -22,12 +27,12 @@ const FormB = () => {
     }
     setErrors(newErrors);
 
-    if (Object.keys(newErrors).length > 0) {
-      const firstErrorField = Object.keys(newErrors)[0];
-      const el = document.querySelector(`[name="${firstErrorField}"]`);
-      el?.scrollIntoView({ behavior: "smooth", block: "center" });
-      setTimeout(() => el?.focus(), 300);
-    }
+    // if (Object.keys(newErrors).length > 0) {
+    //   const firstErrorField = Object.keys(newErrors)[0];
+    //   const el = document.querySelector(`[name="${firstErrorField}"]`);
+    //   el?.scrollIntoView({ behavior: "smooth", block: "center" });
+    //   setTimeout(() => el?.focus(), 300);
+    // }
     return Object.keys(newErrors).length === 0;
   };
 
@@ -36,13 +41,21 @@ const FormB = () => {
     const updated = { ...childProfile, [name]: value };
     setChildProfile(updated);
     localStorage.setItem("childProfile", JSON.stringify(updated));
+    console.log(updated);
+
     setSubmitStatus(null);
   };
+
+  const handleEventSelect = (e) => {
+    setSelectedEvent(e.target.value)
+  }
 
   const handleMedicalHistoryChange = (newContent) => {
     const updated = { ...childProfile, medicalHistory: newContent };
     setChildProfile(updated);
     localStorage.setItem("childProfile", JSON.stringify(updated));
+    console.log(updated);
+
     setSubmitStatus(null);
   };
 
@@ -51,6 +64,8 @@ const FormB = () => {
     const updated = { ...childProfile, dob: val };
     setChildProfile(updated);
     localStorage.setItem("childProfile", JSON.stringify(updated));
+    console.log(updated);
+
     setSubmitStatus(null);
   };
 
@@ -60,9 +75,12 @@ const FormB = () => {
 
   const handleNextOrSubmit = () => {
     if (!validateForm()) return;
-    setSubmitStatus("✅ Form saved successfully");
+    setSubmitStatus("Form saved successfully");
+
     setActiveStep((prev) => Math.min(prev + 1, steps.length - 1));
   };
+
+
 
   const inputClass = "w-full px-3 py-3 border border-body-30 rounded-lg text-body-100 focus:outline-none focus:ring-2 focus:ring-primary-50 focus:border-primary-50 transition-all duration-200 bg-white";
 
@@ -81,7 +99,16 @@ const FormB = () => {
   };
 
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-6 ">
+      <select name="event" value={selectedEvent || ""} onChange={handleEventSelect} className="px-3 py-2 md:px-4 md:py-3 cursor-pointer border border-body-30 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-50 focus:border-primary-50 bg-white transition-all duration-200 text-sm md:text-base flex-1 min-w-[120px]">
+
+        <option value="">Select Option</option>
+        {eventData.map((data) => {
+          return <option key={data?._id} value={data?._id}>{data?.name}</option>
+        })}
+      </select>
+      {errors.event && <p className="text-error text-sm mt-1">{errors.event}</p>}
+
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <div className="w-10 h-10 md:w-12 md:h-12 bg-ternary-70 rounded-xl flex items-center justify-center">
@@ -99,11 +126,11 @@ const FormB = () => {
           <label className="block text-sm font-medium text-body-70">Name <span className="text-error">*</span></label>
           <div className="relative">
             <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-body-50 w-4 h-4" />
-            <input 
-              type="text" 
-              name="name" 
-              value={childProfile.name || ""} 
-              onChange={handleChange} 
+            <input
+              type="text"
+              name="name"
+              value={childProfile.name || ""}
+              onChange={handleChange}
               className={`${inputClass} pl-10`}
               placeholder="Enter full name"
             />
@@ -135,13 +162,13 @@ const FormB = () => {
           <div className="flex flex-wrap gap-3">
             {["Male", "Female", "Other"].map((g) => (
               <label key={g} className="flex items-center space-x-2 text-sm cursor-pointer">
-                <input 
-                  type="radio" 
-                  name="gender" 
-                  value={g} 
-                  checked={childProfile.gender === g} 
-                  onChange={handleChange} 
-                  className="w-4 h-4 accent-primary-100" 
+                <input
+                  type="radio"
+                  name="gender"
+                  value={g}
+                  checked={childProfile.gender === g}
+                  onChange={handleChange}
+                  className="w-4 h-4 accent-primary-100"
                 />
                 <span className="text-body-100">{g}</span>
               </label>
@@ -157,11 +184,11 @@ const FormB = () => {
           <label className="block text-sm font-medium text-body-70">Diagnosis <span className="text-error">*</span></label>
           <div className="relative">
             <Stethoscope className="absolute left-3 top-1/2 transform -translate-y-1/2 text-body-50 w-4 h-4" />
-            <input 
-              type="text" 
-              name="diagnosis" 
-              value={childProfile.diagnosis || ""} 
-              onChange={handleChange} 
+            <input
+              type="text"
+              name="diagnosis"
+              value={childProfile.diagnosis || ""}
+              onChange={handleChange}
               className={`${inputClass} pl-10`}
               placeholder="Enter diagnosis"
             />
@@ -172,11 +199,11 @@ const FormB = () => {
         {/* Present Complaint */}
         <div className="space-y-2">
           <label className="block text-sm font-medium text-body-70">Present Complaint <span className="text-error">*</span></label>
-          <input 
-            type="text" 
-            name="presentComplaint" 
-            value={childProfile.presentComplaint || ""} 
-            onChange={handleChange} 
+          <input
+            type="text"
+            name="presentComplaint"
+            value={childProfile.presentComplaint || ""}
+            onChange={handleChange}
             className={inputClass}
             placeholder="Enter present complaint"
           />
@@ -200,14 +227,14 @@ const FormB = () => {
 
       {/* Navigation */}
       <div className="flex flex-col sm:flex-row justify-between gap-3 pt-6 border-t border-body-30">
-        <button 
-          onClick={handlePrevious} 
+        <button
+          onClick={handlePrevious}
           disabled={activeStep === 0}
           className="px-6 py-3 bg-body-30 text-body-70 rounded-lg font-semibold hover:bg-body-50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed order-2 sm:order-1"
         >
           Previous
         </button>
-        <button 
+        <button
           onClick={handleNextOrSubmit}
           className="px-6 py-3 bg-gradient-to-r from-primary-70 to-primary-100 text-white rounded-lg font-semibold hover:shadow-lg transition-all duration-200 order-1 sm:order-2"
         >
