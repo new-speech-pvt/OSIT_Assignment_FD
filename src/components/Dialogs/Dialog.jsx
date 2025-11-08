@@ -1,7 +1,7 @@
 import { memo, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { RxCross2 } from "react-icons/rx";
-import useClickAwayToClose from "../../Utils/Hooks/useClickAwayToClose";
+import useClickAwayToClose from "../../Utils/hooks/useClickAwayToClose";
 
 const Dialog = memo(
   ({ children, onclose, showIcon = false, clickAwayToClose, width }) => {
