@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import AssignmentForm2 from "../components/AssignmentForm2";
 import { Loader2 } from "lucide-react";
 import { useAuthStore } from "../../store/authStore";
 import AssignmentCard from "../components/AssignmentCard";
 import { axiosClient } from "../../Utils/axiosClient";
-
+import OsitAssignmentProvider from "../contexts/OsitAssignmentContext";
 
 const Home = () => {
   const { user } = useAuthStore();
@@ -44,8 +43,13 @@ const Home = () => {
     );
   }
 
+  // ✅ Wrap AssignmentForm2 with context provider
   if (!data || !data.assignments || data.assignments.length === 0) {
-    return <AssignmentForm2 />;
+    return (
+      <OsitAssignmentProvider>
+        <AssignmentForm2 />
+      </OsitAssignmentProvider>
+    );
   }
 
   const participant = data.participantId;

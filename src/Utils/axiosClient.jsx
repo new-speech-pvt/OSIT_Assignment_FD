@@ -6,6 +6,9 @@ export const axiosClient = axios.create({
 });
 
 // export const axiosClient = axios.create({
+//   baseURL:"http://192.168.29.61:3001"
+// });
+// export const axiosClient = axios.create({
 //   baseURL:"http://localhost:3001"
 // });
 

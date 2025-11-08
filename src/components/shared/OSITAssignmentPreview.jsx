@@ -252,9 +252,9 @@ const OSITAssignmentPreview = ({ role = "THERAPIST" }) => {
                 Full Name
               </label>
               <p className="text-body-100 font-medium text-sm md:text-base">
-                {assignment?.childProfile?.fname}{" "}
-                {assignment?.childProfile?.mname}{" "}
-                {assignment?.childProfile?.lname}
+                {assignment?.childProfile?.fName}{" "}
+                {assignment?.childProfile?.mName}{" "}
+                {assignment?.childProfile?.lName}
               </p>
             </div>
             <div className="space-y-1">

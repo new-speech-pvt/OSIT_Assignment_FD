@@ -7,6 +7,9 @@ import {
   Filter,
   Search,
   Plus,
+  UserPlus,
+  Send,
+  Award,
 } from "lucide-react";
 import { getUserFromLocal } from "../../Utils/auth";
 import { axiosClient } from "../../Utils/axiosClient";
@@ -79,7 +82,7 @@ const Assignments = () => {
             </div>
 
             {/* Action Buttons */}
-            <div className="flex flex-wrap gap-2 md:gap-3">
+            {/* <div className="flex flex-wrap gap-2 md:gap-3">
               <button className="px-4 py-2 md:px-6 md:py-3 cursor-pointer bg-white border border-body-30 rounded-xl text-body-70 font-semibold hover:bg-body-20 transition-all duration-200 shadow-sm hover:shadow-md flex items-center gap-2 text-sm md:text-base">
                 <Filter className="w-4 h-4" />
                 <span className="hidden sm:inline">Filter</span>
@@ -89,102 +92,104 @@ const Assignments = () => {
                 <span className="hidden sm:inline">New Assignment</span>
                 <span className="sm:hidden">New</span>
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
 
       {/* Stats Overview */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4 md:-mt-6 mb-6 md:mb-8">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
-          {/* Total Assignments */}
-          <div className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg border border-body-30 hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-body-70 font-medium text-xs md:text-sm mb-1 md:mb-2">
-                  Total Registration
-                </p>
-                <p className="text-lg md:h2 text-body-100 font-bold">
-                  {data?.length || 0}
-                </p>
-              </div>
-              <div className="w-8 h-8 md:w-12 md:h-12 bg-primary-50 rounded-lg md:rounded-xl flex items-center justify-center">
-                <FileText className="w-4 h-4 md:w-6 md:h-6 text-primary-100" />
-              </div>
-            </div>
-            <div className="mt-2 md:mt-4 pt-2 md:pt-4 border-t border-body-30">
-              <span className="text-xs text-body-50">All assignments</span>
-            </div>
-          </div>
 
-          {/* Active Assignments */}
-          <div className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg border border-body-30 hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-body-70 font-medium text-xs md:text-sm mb-1 md:mb-2">
-                  Active
-                </p>
-                <p className="text-lg md:h2 text-body-100 font-bold">
-                  {data?.filter((item) => item.status === "active").length || 0}
-                </p>
-              </div>
-              <div className="w-8 h-8 md:w-12 md:h-12 bg-secondary-50 rounded-lg md:rounded-xl flex items-center justify-center">
-                <Users className="w-4 h-4 md:w-6 md:h-6 text-secondary-100" />
-              </div>
-            </div>
-            <div className="mt-2 md:mt-4 pt-2 md:pt-4 border-t border-body-30">
-              <span className="text-xs text-body-50">Currently ongoing</span>
-            </div>
-          </div>
 
-          {/* Completed */}
-          <div className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg border border-body-30 hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-body-70 font-medium text-xs md:text-sm mb-1 md:mb-2">
-                  Completed
-                </p>
-                <p className="text-lg md:h2 text-body-100 font-bold">
-                  {data?.filter((item) => item.status === "completed").length ||
-                    0}
-                </p>
-              </div>
-              <div className="w-8 h-8 md:w-12 md:h-12 bg-ternary-70 rounded-lg md:rounded-xl flex items-center justify-center">
-                <Calendar className="w-4 h-4 md:w-6 md:h-6 text-ternary-100" />
-              </div>
-            </div>
-            <div className="mt-2 md:mt-4 pt-2 md:pt-4 border-t border-body-30">
-              <span className="text-xs text-body-50">Successfully done</span>
-            </div>
-          </div>
-
-          {/* Pending */}
-          <div className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg border border-body-30 hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-body-70 font-medium text-xs md:text-sm mb-1 md:mb-2">
-                  Pending
-                </p>
-                <p className="text-lg md:h2 text-body-100 font-bold">
-                  {data?.filter((item) => item.status === "pending").length ||
-                    0}
-                </p>
-              </div>
-              <div className="w-8 h-8 md:w-12 md:h-12 bg-body-30 rounded-lg md:rounded-xl flex items-center justify-center">
-                <Loader2 className="w-4 h-4 md:w-6 md:h-6 text-body-70" />
-              </div>
-            </div>
-            <div className="mt-2 md:mt-4 pt-2 md:pt-4 border-t border-body-30">
-              <span className="text-xs text-body-50">Awaiting action</span>
-            </div>
-          </div>
+<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4 md:-mt-6 mb-6 md:mb-8">
+  <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+    {/* 1️⃣ Registered Users */}
+    <div className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg border border-body-30 hover:shadow-xl transition-all duration-300">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-body-70 font-medium text-xs md:text-sm mb-1 md:mb-2">
+            Registered Users
+          </p>
+          <p className="text-lg md:h2 text-body-100 font-bold">
+            {/* {stats?.registered || 0} */} 0
+          </p>
+        </div>
+        <div className="w-8 h-8 md:w-12 md:h-12 bg-blue-50 rounded-lg md:rounded-xl flex items-center justify-center">
+          <UserPlus className="w-4 h-4 md:w-6 md:h-6 text-blue-600" />
         </div>
       </div>
+      <div className="mt-2 md:mt-4 pt-2 md:pt-4 border-t border-body-30">
+        <span className="text-xs text-body-50">All signed-up users</span>
+      </div>
+    </div>
+
+    {/* 2️⃣ Assignments Created */}
+    
+
+    {/* 3️⃣ Assignments Submitted */}
+    <div className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg border border-body-30 hover:shadow-xl transition-all duration-300">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-body-70 font-medium text-xs md:text-sm mb-1 md:mb-2">
+            Assignments Submitted
+          </p>
+          <p className="text-lg md:h2 text-body-100 font-bold">
+            {/* {stats?.submitted || 0} */} 0
+          </p>
+        </div>
+        <div className="w-8 h-8 md:w-12 md:h-12 bg-green-50 rounded-lg md:rounded-xl flex items-center justify-center">
+          <Send className="w-4 h-4 md:w-6 md:h-6 text-green-600" />
+        </div>
+      </div>
+      <div className="mt-2 md:mt-4 pt-2 md:pt-4 border-t border-body-30">
+        <span className="text-xs text-body-50">Awaiting admin review</span>
+      </div>
+    </div>
+
+    {/* 4️⃣ Assignments Scored */}
+    <div className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg border border-body-30 hover:shadow-xl transition-all duration-300">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-body-70 font-medium text-xs md:text-sm mb-1 md:mb-2">
+            Score Given
+          </p>
+          <p className="text-lg md:h2 text-body-100 font-bold">
+            {/* {stats?.scored || 0} */} 0
+          </p>
+        </div>
+        <div className="w-8 h-8 md:w-12 md:h-12 bg-purple-50 rounded-lg md:rounded-xl flex items-center justify-center">
+          <Award className="w-4 h-4 md:w-6 md:h-6 text-purple-600" />
+        </div>
+      </div>
+      <div className="mt-2 md:mt-4 pt-2 md:pt-4 border-t border-body-30">
+        <span className="text-xs text-body-50">Reviewed & graded</span>
+      </div>
+    </div>
+    <div className="bg-white rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg border border-body-30 hover:shadow-xl transition-all duration-300">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-body-70 font-medium text-xs md:text-sm mb-1 md:mb-2">
+            Score Pending
+          </p>
+          <p className="text-lg md:h2 text-body-100 font-bold">
+            {/* {stats?.created || 0} */} 0
+          </p>
+        </div>
+        <div className="w-8 h-8 md:w-12 md:h-12 bg-yellow-50 rounded-lg md:rounded-xl flex items-center justify-center">
+          <FileText className="w-4 h-4 md:w-6 md:h-6 text-yellow-600" />
+        </div>
+      </div>
+      <div className="mt-2 md:mt-4 pt-2 md:pt-4 border-t border-body-30">
+        <span className="text-xs text-body-50">Forms started by users</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 md:pb-12">
         {/* Search and Filter Bar */}
-        <div className="bg-white rounded-xl md:rounded-2xl shadow-lg border border-body-30 p-4 md:p-6 mb-4 md:mb-6">
+        {/* <div className="bg-white rounded-xl md:rounded-2xl shadow-lg border border-body-30 p-4 md:p-6 mb-4 md:mb-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 md:gap-4">
             <div className="flex-1 max-w-full lg:max-w-md">
               <div className="relative">
@@ -217,7 +222,7 @@ const Assignments = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Table Container */}
         <div className="bg-white rounded-xl md:rounded-2xl shadow-lg border border-body-30 overflow-hidden">

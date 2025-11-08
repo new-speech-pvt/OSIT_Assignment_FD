@@ -61,8 +61,7 @@ const TherapistRoute = () => {
             </div>
           </div>
         </div>
-      </header>
-
+      </header> 
       {/* Main Content */}
       <main className="flex-grow w-full">
         <Routes>

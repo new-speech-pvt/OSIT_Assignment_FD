@@ -1,4 +1,3 @@
-// ----------------------------------------------------------------------------------
 import { createContext, useState, useEffect } from "react";
 import { axiosClient } from "../../Utils/axiosClient";
 import FormB from "../components/FormB";
@@ -14,31 +13,29 @@ const OsitAssignmentProvider = ({ children }) => {
     activity: [""],
     childResponse: "",
     date: "",
-    tool:""
+    tool: "",
   };
   const weeks = ["week1", "week2", "week3", "week4", "week5"];
 
   const defaultinterventionPlan = {
     week1: [{ ...initialSession }],
     week2: [{ ...initialSession }],
-    week3: [{ ...initialSession }],
-    week4: [{ ...initialSession }],
-    week5: [{ ...initialSession }],
-    mentionToolUsedForRespectiveGoal: "",
   };
 
   const [activeStep, setActiveStep] = useState(0);
   const [eventData, setEventData] = useState([]);
-  const [selectedEvent, setSelectedEvent] = useState("")
+  const [selectedEvent, setSelectedEvent] = useState("");
   const [childProfile, setChildProfile] = useState({
-    name: "",
+    fName: "",
+    mName: "",
+    lName: "",
     dob: "",
     gender: "",
     diagnosis: "",
     presentComplaint: "",
     medicalHistory: "",
-    event:""
-  }); 
+    event: "",
+  });
 
   const [assignmentDetail, setAssignmentDetails] = useState({
     problemStatement: "",
@@ -53,14 +50,12 @@ const OsitAssignmentProvider = ({ children }) => {
 
   const [submitStatus, setSubmitStatus] = useState(null);
 
-  // Load data from localStorage on component mount
   useEffect(() => {
     const loadFromLocalStorage = () => {
       try {
-        // const savedFormA = localStorage.getItem('participantInfo');
-        // if (savedFormA) {
-        //     setParticipantInfo(JSON.parse(savedFormA));
-        // }
+        
+        const savedSelectedEvent = localStorage.getItem("selectedEvent");
+        if (savedSelectedEvent) setSelectedEvent(savedSelectedEvent);
         const savedFormB = localStorage.getItem("childProfile");
         if (savedFormB) {
           setChildProfile(JSON.parse(savedFormB));
@@ -105,78 +100,82 @@ const OsitAssignmentProvider = ({ children }) => {
     }
   };
   const resetAllForms = () => {
-    // Clear localStorage
     [
       "participantInfo",
       "childProfile",
       "assignmentDetail",
       "interventionPlan",
-    ].forEach((key) => {
-      localStorage.removeItem(key);
-    });
+      "selectedEvent",
+    ].forEach((key) => localStorage.removeItem(key));
 
-    // Reset all states
-    // setParticipantInfo({
-    //     fName: '',
-    //     lName: '',
-    //     gender: '',
-    //     dob: '',
-    //     phone: '',
-    //     email: '',
-    //     state: '',
-    //     city: '',
-    //     therapistType: '',
-    //     enrollmentId: ''
-    // });
+    // ✅ fixed correct keys
     setChildProfile({
-      name: "",
+      fName: "",
+      mName: "",
+      lName: "",
       dob: "",
       gender: "",
       diagnosis: "",
       presentComplaint: "",
       medicalHistory: "",
-      event:""
+      event: "",
     });
+
     setAssignmentDetails({
       problemStatement: "",
       identificationAndObjectiveSetting: "",
       planningAndToolSection: "",
       toolStrategiesApproaches: "",
     });
+
     setInterventionPlan(defaultinterventionPlan);
     setActiveStep(0);
     setSubmitStatus(null);
+    setSelectedEvent("");
   };
 
   const handleFormCompletion = async () => {
     try {
-      // Format dates properly
       const formatDate = (date) => {
         if (!date) return "";
         if (date instanceof Date) return date.toISOString().split("T")[0];
         if (typeof date === "string") {
-          // Handle DD-MM-YYYY format
           if (/^\d{2}-\d{2}-\d{4}$/.test(date)) {
             const [day, month, year] = date.split("-");
             return `${year}-${month}-${day}`;
           }
-          // Handle other string formats
           return new Date(date).toISOString().split("T")[0];
         }
         return "";
       };
 
-      // Transform data to match backend structure
+      // ✅ Build only weeks that exist and have sessions
+      const interventionData = {};
+      Object.entries(interventionPlan).forEach(([weekKey, sessions]) => {
+        if (Array.isArray(sessions) && sessions.length > 0) {
+          interventionData[weekKey] = {
+            sessions: sessions.map((session, index) => ({
+              ...session,
+              sessionNo: index + 1,
+              date: formatDate(session.date),
+            })),
+          };
+        }
+      });
+
+      // ✅ Build final data object
       const transformedData = {
         event: selectedEvent,
         childProfile: {
-          name: childProfile.name || "",
+          fName: childProfile.fName || "",
+          mName: childProfile.mName || "",
+          lName: childProfile.lName || "",
           dob: formatDate(childProfile.dob),
           gender: childProfile.gender || "",
           diagnosis: childProfile.diagnosis || "",
           presentComplaint: childProfile.presentComplaint || "",
           medicalHistory: childProfile.medicalHistory || "",
-          event:childProfile.event || ""
+          event: childProfile.event || "",
         },
         assignmentDetail: {
           problemStatement: assignmentDetail.problemStatement || "",
@@ -186,43 +185,20 @@ const OsitAssignmentProvider = ({ children }) => {
           toolStrategiesApproaches:
             assignmentDetail.toolStrategiesApproaches || "",
         },
-        interventionPlan: {
-          week1: { sessions: interventionPlan.week1 || [] },
-          week2: { sessions: interventionPlan.week2 || [] },
-          week3: { sessions: interventionPlan.week3 || [] },
-          week4: { sessions: interventionPlan.week4 || [] },
-          week5: { sessions: interventionPlan.week5 || [] },
-        },
+        interventionPlan: interventionData, // ✅ safe dynamic plan
       };
-
-      // Add session numbers
-      ["week1", "week2", "week3", "week4", "week5"].forEach((week) => {
-        transformedData.interventionPlan[week].sessions =
-          transformedData.interventionPlan[week].sessions.map(
-            (session, index) => ({
-              ...session,
-              sessionNo: index + 1,
-              date: formatDate(session.date),
-            })
-          );
-      });
 
       console.log("Submitting data:", transformedData);
 
-      // API call
-
+      // ✅ Send to API
       const response = await axiosClient.post(
         `/osit-assignments`,
-
         transformedData
       );
       console.log("API Response:", response);
-
-      // Reset forms and show success
-      // resetAllForms();
-      // setSubmitStatus("Form submitted successfully");
-      // window.location.reload();
-      
+      resetAllForms();
+      setSubmitStatus("Form submitted successfully");
+      window.location.reload();
     } catch (error) {
       console.log("API Error:", error.response?.data || error);
       setSubmitStatus("Submission failed. Please try again.");
@@ -253,7 +229,8 @@ const OsitAssignmentProvider = ({ children }) => {
         resetAllForms,
         eventData,
         setEventData,
-        selectedEvent, setSelectedEvent
+        selectedEvent,
+        setSelectedEvent,
       }}
     >
       {children}

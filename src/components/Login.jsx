@@ -192,7 +192,7 @@ export default function Login() {
               <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center mb-6 backdrop-blur-sm">
                 <Stethoscope className="w-10 h-10" />
               </div>
-              <h1 className="text-3xl font-bold mb-4">OSIT Assignment</h1>
+              <h1 className="text-3xl font-bold mb-4">OSIT Practical Exercise</h1>
               <p className="text-white/80 text-lg mb-6">
                 Professional oral sensorimotor integration therapy management
                 system for therapists and participants.
@@ -244,7 +244,7 @@ export default function Login() {
                     ? "Enter your email to reset password"
                     : isLogin
                     ? "Sign in to your account"
-                    : "Join our therapy platform today"}
+                    : "Join our platform today"}
                 </p>
               </div>
 
