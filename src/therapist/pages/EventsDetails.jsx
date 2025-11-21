@@ -101,44 +101,44 @@ const EventsDetails = () => {
   }
 
   // Empty State
-  if (!loading && events.length === 0) {
-    return (
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="min-h-screen bg-gradient-to-br from-body-20 to-white flex items-center justify-center p-4"
-      >
-        <div className="text-center max-w-md">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", duration: 0.5 }}
-            className="bg-white rounded-2xl p-8 shadow-lg border border-body-30"
-          >
-            <div className="relative inline-block mb-4">
-              <Calendar className="w-16 h-16 text-body-50" />
-              <div className="absolute -top-1 -right-1 w-6 h-6 bg-ternary-70 rounded-full flex items-center justify-center">
-                <span className="text-white text-xs font-bold">0</span>
-              </div>
-            </div>
-            <h3 className="h3 text-body-100 mb-2 font-semibold">
-              No Events Found
-            </h3>
-            <p className="text-body-50 mb-6">
-              There are no events scheduled at the moment. Create your first event to get started.
-            </p>
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="bg-primary-100 text-white px-6 py-3 rounded-xl font-medium hover:bg-primary-70 transition-colors"
-            >
-              Create Event
-            </motion.button>
-          </motion.div>
-        </div>
-      </motion.div>
-    );
-  }
+  // if (!loading && events.length === 0) {
+  //   return (
+  //     <motion.div
+  //       initial={{ opacity: 0 }}
+  //       animate={{ opacity: 1 }}
+  //       className="min-h-screen bg-gradient-to-br from-body-20 to-white flex items-center justify-center p-4"
+  //     >
+  //       <div className="text-center max-w-md">
+  //         <motion.div
+  //           initial={{ scale: 0 }}
+  //           animate={{ scale: 1 }}
+  //           transition={{ type: "spring", duration: 0.5 }}
+  //           className="bg-white rounded-2xl p-8 shadow-lg border border-body-30"
+  //         >
+  //           <div className="relative inline-block mb-4">
+  //             <Calendar className="w-16 h-16 text-body-50" />
+  //             <div className="absolute -top-1 -right-1 w-6 h-6 bg-ternary-70 rounded-full flex items-center justify-center">
+  //               <span className="text-white text-xs font-bold">0</span>
+  //             </div>
+  //           </div>
+  //           <h3 className="h3 text-body-100 mb-2 font-semibold">
+  //             No Events Found
+  //           </h3>
+  //           <p className="text-body-50 mb-6">
+  //             There are no events scheduled at the moment. Create your first event to get started.
+  //           </p>
+  //           <motion.button
+  //             whileHover={{ scale: 1.02 }}
+  //             whileTap={{ scale: 0.98 }}
+  //             className="bg-primary-100 text-white px-6 py-3 rounded-xl font-medium hover:bg-primary-70 transition-colors"
+  //           >
+  //             Create Event
+  //           </motion.button>
+  //         </motion.div>
+  //       </div>
+  //     </motion.div>
+  //   );
+  // }
 
   return (
     <motion.div

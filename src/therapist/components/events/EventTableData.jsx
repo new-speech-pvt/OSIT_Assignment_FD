@@ -193,7 +193,7 @@ const EventTableData = ({
               <div className="max-h-[500px] overflow-y-auto custom-scrollbar">
                 <table className="w-full text-left bg-white">
                   <thead>
-                    <tr className="sticky top-0 bg-gradient-to-r from-secondary-70 to-secondary-100 text-white z-10 shadow-md">
+                    <tr className="sticky whitespace-nowrap top-0 bg-gradient-to-r from-secondary-70 to-secondary-100 text-white z-10 shadow-md">
                       {headers.map((th) => (
                         <th
                           key={th.key}

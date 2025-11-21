@@ -174,7 +174,7 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-body-20 to-primary-50/20 flex items-center justify-center p-4">
       <div className="w-full max-w-6xl bg-white rounded-2xl shadow-2xl border border-body-30 overflow-hidden">
-        <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[80vh]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 min-h-[80dvh]">
           {/* Left Side - Branding */}
           <div
             className="relative hidden lg:flex flex-col justify-center text-white p-8 lg:p-12 bg-center bg-no-repeat bg-cover"
@@ -215,7 +215,7 @@ export default function Login() {
           </div>
 
           {/* Right Side - Form */}
-          <div className="p-6 md:p-8 lg:p-12 overflow-y-auto">
+          <div className="p-6 md:p-8 lg:p-12 lg:h-[80dvh] overflow-y-auto">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
